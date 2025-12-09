@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Dashboard - Smart Parenting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --sidebar-width: 250px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--dark);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            padding: 20px 0;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--warning);
+            margin-right: 10px;
+        }
+
+        .logo h2 {
+            font-size: 22px;
+            color: white;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            color: #b3b3b3;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(247, 37, 133, 0.2);
+            color: white;
+            border-left: 4px solid var(--warning);
+        }
+
+        .menu-item i {
+            width: 30px;
+            font-size: 18px;
+        }
+
+        .badge {
+            background: var(--danger);
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            color: var(--dark);
+        }
+
+        .header-left p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification i {
+            font-size: 22px;
+            color: var(--gray);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--warning);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background: linear-gradient(135deg, var(--warning) 0%, #e1156d 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-text h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .expert-rating {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .expert-rating i {
+            color: gold;
+            margin-right: 5px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stat-icon.cases { background: #f72585; }
+        .stat-icon.parents { background: #4361ee; }
+        .stat-icon.children { background: #4cc9f0; }
+        .stat-icon.rating { background: #ffd166; }
+
+        .stat-info h3 {
+            font-size: 28px;
+            color: var(--dark);
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 20px;
+            color: var(--dark);
+            margin: 40px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Cases Grid */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .case-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .case-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .case-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .case-info h4 {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .case-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .stat-item h5 {
+            font-size: 20px;
+            color: var(--warning);
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .action-btn {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            border-color: var(--warning);
+            background: rgba(247, 37, 133, 0.05);
+        }
+
+        .action-btn i {
+            font-size: 28px;
+            color: var(--warning);
+        }
+
+        .action-btn span {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        /* Recent Suggestions */
+        .suggestions-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid #eee;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status.pending { background: #fff3cd; color: #856404; }
+        .status.reviewed { background: #d1e7ff; color: #084298; }
+        .status.implemented { background: #d4edda; color: #155724; }
+
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            background: var(--warning);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(247, 37, 133, 0.3);
+            transition: all 0.3s;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            background: #e1156d;
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-window.active {
+            display: flex;
+        }
+
+        .chat-header {
+            background: var(--warning);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+        }
+
+        .message.sent {
+            margin-left: auto;
+        }
+
+        .message-content {
+            padding: 12px 15px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .message.sent .message-content {
+            background: var(--warning);
+            color: white;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: var(--warning);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto; /* Scroll fix */
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: var(--warning);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #e1156d;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* Profile Edit Form */
+        .profile-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--warning);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0 auto 20px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .chat-window {
+                width: 100%;
+                height: 70vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 15px 15px 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-user-md"></i>
+            <h2>Expert Panel</h2>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="menu-item" id="viewCasesBtn">
+                <i class="fas fa-eye"></i> View Cases
+            </a>
+            <a href="#" class="menu-item" id="suggestionsBtn">
+                <i class="fas fa-lightbulb"></i> Suggestions
+            </a>
+            <a href="#" class="menu-item" id="reportsBtn">
+                <i class="fas fa-chart-bar"></i> Progress Reports
+            </a>
+            <a href="#" class="menu-item" id="chatBtn">
+                <i class="fas fa-comments"></i> Chat with Parents
+            </a>
+            <a href="ratings.html" class="menu-item">
+                <i class="fas fa-star"></i> My Ratings
+            </a>
+            <a href="#" class="menu-item" id="profileBtn">
+                <i class="fas fa-user"></i> My Profile
+            </a>
+            <a href="#" class="menu-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 id="welcomeText">Welcome, Expert!</h1>
+                <p>Monitor assigned children and provide guidance</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="notification" id="notificationBell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count" id="notificationCount">2</span>
+                </div>
+                
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">E</div>
+                    <div>
+                        <h4 id="userName">Expert Name</h4>
+                        <p>Child Development Expert</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Welcome Card -->
+            <div class="welcome-card">
+                <div class="welcome-text">
+                    <h2 id="greetingMessage">Good Morning, Doctor!</h2>
+                    <p>You have <span id="caseCount">3</span> active cases to review</p>
+                </div>
+                <div class="expert-rating">
+                    <i class="fas fa-star"></i>
+                    <span id="expertRating">4.8</span> Rating
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon cases">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="activeCases">3</h3>
+                        <p>Active Cases</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon parents">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="assignedParents">2</h3>
+                        <p>Assigned Parents</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon children">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="assignedChildren">4</h3>
+                        <p>Children</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon rating">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalSuggestions">12</h3>
+                        <p>Suggestions Given</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assigned Cases -->
+            <div class="section-title">
+                <h3>My Assigned Cases</h3>
+                <button class="btn" id="refreshCasesBtn">Refresh</button>
+            </div>
+            
+            <div class="cases-grid" id="casesGrid">
+                <!-- Cases will be loaded here -->
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="section-title">
+                <h3>Quick Actions</h3>
+            </div>
+            
+            <div class="quick-actions">
+                <div class="action-btn" id="giveSuggestionBtn">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Give Suggestion</span>
+                </div>
+                
+                <div class="action-btn" id="viewHealthBtn">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>View Health Data</span>
+                </div>
+                
+                <div class="action-btn" id="viewEducationBtn">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>View Education Data</span>
+                </div>
+                
+                <div class="action-btn" id="generateReportBtn">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Generate Report</span>
+                </div>
+            </div>
+
+            <!-- Recent Suggestions -->
+            <div class="section-title">
+                <h3>Recent Suggestions</h3>
+            </div>
+            
+            <div class="suggestions-table">
+                <table id="suggestionsTable">
+                    <thead>
+                        <tr>
+                            <th>Child</th>
+                            <th>Suggestion</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Suggestions will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <div class="chat-button" id="chatToggle">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3>Chat with Parents</h3>
+                <button class="chat-close" id="closeChat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will appear here -->
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type your message...">
+                <button id="sendMessage">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Give Suggestion Modal -->
+    <div class="modal" id="suggestionModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeSuggestionModal">&times;</button>
+            <h2>Give Suggestion</h2>
+            <form id="suggestionForm">
+                <div class="form-group">
+                    <label>Select Child</label>
+                    <select id="suggestionChild" required>
+                        <option value="">Select Child</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Suggestion Title</label>
+                    <input type="text" id="suggestionTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="suggestionCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="health">Health</option>
+                        <option value="education">Education</option>
+                        <option value="activity">Activity</option>
+                        <option value="behavior">Behavior</option>
+                        <option value="general">General</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select id="suggestionPriority" required>
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Suggestion Details</label>
+                    <textarea id="suggestionDetails" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-block">Submit Suggestion</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Expert Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeProfileModal">&times;</button>
+            <h2>My Profile</h2>
+            
+            <div class="profile-avatar" id="profileAvatar">E</div>
+            
+            <form id="profileForm" class="profile-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label>Specialization</label>
+                    <input type="text" id="specialization" placeholder="e.g., Child Psychology, Pediatrician">
+                </div>
+                
+                <div class="form-group">
+                    <label>Qualifications</label>
+                    <textarea id="qualifications" rows="3" placeholder="e.g., MBBS, MD in Pediatrics, PhD in Child Development"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Years of Experience</label>
+                    <input type="number" id="experience" min="0" max="50" placeholder="e.g., 10">
+                </div>
+                
+                <div class="form-group">
+                    <label>Hourly Rate ($)</label>
+                    <input type="number" id="hourlyRate" min="0" placeholder="e.g., 50">
+                </div>
+                
+                <div class="form-group">
+                    <label>Bio/About Me</label>
+                    <textarea id="bio" rows="4" placeholder="Tell parents about yourself and your expertise"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-block">Update Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class ExpertDashboard {
+            constructor() {
+                this.currentUser = null;
+                this.assignments = [];
+                this.cases = [];
+                this.initialize();
+            }
+            
+            initialize() {
+                this.checkAuthentication();
+                this.loadUserData();
+                this.loadAssignments();
+                this.loadCases();
+                this.setupEventListeners();
+                this.updateStats();
+                this.setupChat();
+            }
+            
+            checkAuthentication() {
+                const token = localStorage.getItem('token');
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (!token || user.role !== 'expert') {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                this.currentUser = user;
+            }
+            
+            loadUserData() {
+                document.getElementById('userName').textContent = this.currentUser.name;
+                document.getElementById('userAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                document.getElementById('welcomeText').textContent = `Welcome, Dr. ${this.currentUser.name.split(' ')[0]}!`;
+                
+                // Set greeting based on time
+                const hour = new Date().getHours();
+                let greeting = 'Good Morning, Doctor!';
+                if (hour >= 12 && hour < 17) greeting = 'Good Afternoon, Doctor!';
+                if (hour >= 17) greeting = 'Good Evening, Doctor!';
+                document.getElementById('greetingMessage').textContent = greeting;
+                
+                // Show expert rating if available
+                const ratings = JSON.parse(localStorage.getItem('ratings') || '[]')
+                    .filter(r => r.expertId === this.currentUser.id);
+                
+                if (ratings.length > 0) {
+                    const avgRating = ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length;
+                    document.getElementById('expertRating').textContent = avgRating.toFixed(1);
+                }
+            }
+            
+            loadAssignments() {
+                this.assignments = JSON.parse(localStorage.getItem('assignments') || '[]')
+                    .filter(a => a.expertId === this.currentUser.id);
+                
+                document.getElementById('caseCount').textContent = this.assignments.length;
+                document.getElementById('activeCases').textContent = this.assignments.length;
+                
+                const uniqueParents = [...new Set(this.assignments.map(a => a.parentId))];
+                document.getElementById('assignedParents').textContent = uniqueParents.length;
+            }
+            
+            loadCases() {
+                const assignments = this.assignments;
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const children = JSON.parse(localStorage.getItem('children') || '[]');
+                
+                this.cases = [];
+                
+                assignments.forEach(assignment => {
+                    const parent = users.find(u => u.id === assignment.parentId);
+                    if (!parent) return;
+                    
+                    const parentChildren = children.filter(c => c.parentId === parent.id);
+                    
+                    parentChildren.forEach(child => {
+                        this.cases.push({
+                            childId: child.id,
+                            childName: child.name,
+                            parentId: parent.id,
+                            parentName: parent.name,
+                            assignmentId: assignment.id,
+                            age: this.calculateAge(child.dob),
+                            gender: child.gender
+                        });
+                    });
+                });
+                
+                document.getElementById('assignedChildren').textContent = this.cases.length;
+                this.updateCasesGrid();
+            }
+            
+            calculateAge(dob) {
+                const birthDate = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+            
+            updateCasesGrid() {
+                const grid = document.getElementById('casesGrid');
+                
+                if (this.cases.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: white; border-radius: 15px;">
+                            <i class="fas fa-user-md" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
+                            <h3 style="color: var(--gray); margin-bottom: 10px;">No Assigned Cases</h3>
+                            <p style="color: var(--gray); margin-bottom: 20px;">You will be assigned cases by the admin</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                grid.innerHTML = this.cases.map(caseItem => {
+                    const healthScore = this.calculateHealthScore(caseItem.childId);
+                    const educationScore = this.calculateEducationScore(caseItem.childId);
+                    
+                    return `
+                        <div class="case-card" onclick="window.expertDashboard.viewChildProfile('${caseItem.childId}')">
+                            <div class="case-header">
+                                <div class="case-avatar">${caseItem.childName.charAt(0)}</div>
+                                <div class="case-info">
+                                    <h4>${caseItem.childName}</h4>
+                                    <p>${caseItem.age} years • ${caseItem.gender}</p>
+                                    <small style="color: var(--gray);">Parent: ${caseItem.parentName}</small>
+                                </div>
+                            </div>
+                            <div class="case-stats">
+                                <div class="stat-item">
+                                    <h5>${healthScore}%</h5>
+                                    <p>Health</p>
+                                </div>
+                                <div class="stat-item">
+                                    <h5>${educationScore}%</h5>
+                                    <p>Education</p>
+                                </div>
+                                <div class="stat-item">
+                                    <h5>${this.getActivityCount(caseItem.childId)}</h5>
+                                    <p>Activities</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            calculateHealthScore(childId) {
+                const records = JSON.parse(localStorage.getItem('healthRecords') || '[]')
+                    .filter(record => record.childId === childId);
+                
+                if (records.length === 0) return 0;
+                
+                const latest = records[records.length - 1];
+                const weight = latest.weight || 0;
+                const height = latest.height || 1;
+                
+                const bmi = weight / ((height/100) * (height/100));
+                let score = 85;
+                
+                if (bmi < 18.5) score = 70;
+                else if (bmi >= 18.5 && bmi <= 24.9) score = 95;
+                else if (bmi > 24.9) score = 75;
+                
+                return score;
+            }
+            
+            calculateEducationScore(childId) {
+                const records = JSON.parse(localStorage.getItem('educationRecords') || '[]')
+                    .filter(record => record.childId === childId);
+                
+                if (records.length === 0) return 0;
+                
+                const total = records.reduce((sum, record) => {
+                    const marks = parseInt(record.marks) || 0;
+                    return sum + (marks > 100 ? 100 : marks);
+                }, 0);
+                
+                return Math.round(total / records.length);
+            }
+            
+            getActivityCount(childId) {
+                const activities = JSON.parse(localStorage.getItem('activities') || '[]')
+                    .filter(activity => activity.childId === childId);
+                return activities.length;
+            }
+            
+            updateStats() {
+                // Update suggestions count
+                const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]')
+                    .filter(s => s.expertId === this.currentUser.id);
+                
+                document.getElementById('totalSuggestions').textContent = suggestions.length;
+                
+                // Update suggestions table
+                this.updateSuggestionsTable();
+            }
+            
+            updateSuggestionsTable() {
+                const tbody = document.getElementById('suggestionsTable').querySelector('tbody');
+                const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]')
+                    .filter(s => s.expertId === this.currentUser.id)
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .slice(0, 10);
+                
+                if (suggestions.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-lightbulb" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                No suggestions given yet
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                const children = JSON.parse(localStorage.getItem('children') || '[]');
+                
+                tbody.innerHTML = suggestions.map(suggestion => {
+                    const child = children.find(c => c.id === suggestion.childId);
+                    return `
+                        <tr>
+                            <td>${child?.name || 'Unknown'}</td>
+                            <td>${suggestion.title}</td>
+                            <td>${suggestion.category}</td>
+                            <td><span class="status ${suggestion.status || 'pending'}">${suggestion.status || 'Pending'}</span></td>
+                            <td>${new Date(suggestion.date).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            // ===========================================
+            // NEW FUNCTIONS FOR EXPERT PROFILE
+            // ===========================================
+            
+            showProfileModal() {
+                // Load current user data
+                document.getElementById('fullName').value = this.currentUser.name || '';
+                document.getElementById('email').value = this.currentUser.email || '';
+                document.getElementById('phone').value = this.currentUser.phone || '';
+                document.getElementById('specialization').value = this.currentUser.specialization || '';
+                document.getElementById('qualifications').value = this.currentUser.qualifications || '';
+                document.getElementById('experience').value = this.currentUser.experience || '';
+                document.getElementById('hourlyRate').value = this.currentUser.hourlyRate || '';
+                document.getElementById('bio').value = this.currentUser.bio || '';
+                document.getElementById('profileAvatar').textContent = (this.currentUser.name || 'E').charAt(0).toUpperCase();
+                
+                document.getElementById('profileModal').classList.add('active');
+            }
+            
+            updateProfile() {
+                // Update expert profile data
+                this.currentUser.name = document.getElementById('fullName').value;
+                this.currentUser.email = document.getElementById('email').value;
+                this.currentUser.phone = document.getElementById('phone').value;
+                this.currentUser.specialization = document.getElementById('specialization').value;
+                this.currentUser.qualifications = document.getElementById('qualifications').value;
+                this.currentUser.experience = document.getElementById('experience').value;
+                this.currentUser.hourlyRate = document.getElementById('hourlyRate').value;
+                this.currentUser.bio = document.getElementById('bio').value;
+                
+                // Save to localStorage
+                localStorage.setItem('user', JSON.stringify(this.currentUser));
+                
+                // Update users array in localStorage
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                users = users.map(u => u.id === this.currentUser.id ? this.currentUser : u);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Update UI
+                this.loadUserData();
+                
+                alert('Profile updated successfully!');
+                document.getElementById('profileModal').classList.remove('active');
+                
+                // Log activity
+                this.logActivity({
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    action: 'Updated expert profile',
+                    type: 'profile',
+                    details: 'Updated expert profile information'
+                });
+            }
+            
+            // ===========================================
+            // END OF NEW FUNCTIONS
+            // ===========================================
+            
+            setupEventListeners() {
+                // Menu items
+                document.getElementById('viewCasesBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showCases();
+                });
+                
+                document.getElementById('suggestionsBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showSuggestions();
+                });
+                
+                document.getElementById('reportsBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showReports();
+                });
+                
+                document.getElementById('chatBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.toggleChat();
+                });
+                
+                // UPDATED: Profile button
+                document.getElementById('profileBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showProfileModal(); // Updated to show profile modal
+                });
+                
+                document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.logout();
+                });
+                
+                // Quick actions
+                document.getElementById('giveSuggestionBtn').addEventListener('click', () => {
+                    this.showSuggestionModal();
+                });
+                
+                document.getElementById('refreshCasesBtn').addEventListener('click', () => {
+                    this.loadCases();
+                    this.updateStats();
+                    alert('Cases refreshed!');
+                });
+                
+                document.getElementById('viewHealthBtn').addEventListener('click', () => {
+                    alert('Health data view would open here');
+                });
+                
+                document.getElementById('viewEducationBtn').addEventListener('click', () => {
+                    alert('Education data view would open here');
+                });
+                
+                document.getElementById('generateReportBtn').addEventListener('click', () => {
+                    this.generateReport();
+                });
+                
+                // Modal close buttons
+                document.getElementById('closeSuggestionModal').addEventListener('click', () => {
+                    document.getElementById('suggestionModal').classList.remove('active');
+                });
+                
+                document.getElementById('closeProfileModal').addEventListener('click', () => {
+                    document.getElementById('profileModal').classList.remove('active');
+                });
+                
+                // Form submissions
+                document.getElementById('suggestionForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.submitSuggestion();
+                });
+                
+                // NEW: Profile Form Submission
+                document.getElementById('profileForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.updateProfile();
+                });
+                
+                // Chat
+                document.getElementById('chatToggle').addEventListener('click', () => {
+                    this.toggleChat();
+                });
+                
+                document.getElementById('closeChat').addEventListener('click', () => {
+                    this.toggleChat();
+                });
+                
+                document.getElementById('sendMessage').addEventListener('click', () => {
+                    this.sendMessage();
+                });
+                
+                document.getElementById('messageInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+                
+                // Close modal when clicking outside
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                        }
+                    });
+                });
+            }
+            
+            showSuggestionModal() {
+                if (this.cases.length === 0) {
+                    alert('No assigned cases to give suggestions for');
+                    return;
+                }
+                
+                const select = document.getElementById('suggestionChild');
+                select.innerHTML = '<option value="">Select Child</option>' +
+                    this.cases.map(caseItem => 
+                        `<option value="${caseItem.childId}">${caseItem.childName} (${caseItem.parentName})</option>`
+                    ).join('');
+                
+                document.getElementById('suggestionModal').classList.add('active');
+            }
+            
+            submitSuggestion() {
+                const suggestion = {
+                    id: 'sugg_' + Date.now(),
+                    expertId: this.currentUser.id,
+                    expertName: this.currentUser.name,
+                    childId: document.getElementById('suggestionChild').value,
+                    title: document.getElementById('suggestionTitle').value,
+                    category: document.getElementById('suggestionCategory').value,
+                    priority: document.getElementById('suggestionPriority').value,
+                    details: document.getElementById('suggestionDetails').value,
+                    status: 'pending',
+                    date: new Date().toISOString()
+                };
+                
+                let suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]');
+                suggestions.push(suggestion);
+                localStorage.setItem('suggestions', JSON.stringify(suggestions));
+                
+                alert('Suggestion submitted successfully!');
+                document.getElementById('suggestionModal').classList.remove('active');
+                document.getElementById('suggestionForm').reset();
+                
+                this.updateStats();
+            }
+            
+            viewChildProfile(childId) {
+                localStorage.setItem('selectedChildId', childId);
+                window.location.href = 'child-profile.html';
+            }
+            
+            showCases() {
+                document.getElementById('viewCasesBtn').classList.add('active');
+                // Scroll to cases grid
+                document.getElementById('casesGrid').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            showSuggestions() {
+                document.getElementById('suggestionsBtn').classList.add('active');
+                // Scroll to suggestions table
+                document.getElementById('suggestionsTable').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            showReports() {
+                document.getElementById('reportsBtn').classList.add('active');
+                this.generateReport();
+            }
+            
+            generateReport() {
+                if (this.cases.length === 0) {
+                    alert('No cases to generate report for');
+                    return;
+                }
+                
+                // Get expert suggestions
+                const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]')
+                    .filter(s => s.expertId === this.currentUser.id);
+                
+                const reportData = `
+                    <h3>Expert Report - ${this.currentUser.name}</h3>
+                    <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+                    <p><strong>Total Cases:</strong> ${this.cases.length}</p>
+                    <p><strong>Total Parents:</strong> ${[...new Set(this.cases.map(c => c.parentId))].length}</p>
+                    <p><strong>Total Children:</strong> ${this.cases.length}</p>
+                    <p><strong>Total Suggestions Given:</strong> ${suggestions.length}</p>
+                    <p><strong>Specialization:</strong> ${this.currentUser.specialization || 'Not specified'}</p>
+                    
+                    <h4>Case Summary:</h4>
+                    <ul>
+                        ${this.cases.map(c => `<li>${c.childName} (${c.age} years) - Parent: ${c.parentName}</li>`).join('')}
+                    </ul>
+                    
+                    <h4>Recent Suggestions (Last 5):</h4>
+                    <ul>
+                        ${suggestions.slice(0, 5).map(s => `<li>${s.title} - ${s.category} (${s.status})</li>`).join('')}
+                    </ul>
+                `;
+                
+                // Create a new window with the report
+                const reportWindow = window.open('', '_blank');
+                reportWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>Expert Report</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 20px; }
+                            h3, h4 { color: #333; }
+                            p { margin: 10px 0; }
+                            ul { margin-left: 20px; }
+                        </style>
+                    </head>
+                    <body>
+                        ${reportData}
+                        <br><br>
+                        <button onclick="window.print()">Print Report</button>
+                    </body>
+                    </html>
+                `);
+            }
+            
+            setupChat() {
+                // Simulate chat messages
+                const messages = [
+                    { sender: 'parent', text: 'Hello Doctor, how is my child doing?' },
+                    { sender: 'expert', text: 'Your child is making good progress!' },
+                    { sender: 'parent', text: 'Thank you for the update!' }
+                ];
+                
+                const messagesDiv = document.getElementById('chatMessages');
+                messages.forEach(msg => {
+                    const div = document.createElement('div');
+                    div.className = `message ${msg.sender === 'expert' ? 'sent' : ''}`;
+                    div.innerHTML = `<div class="message-content">${msg.text}</div>`;
+                    messagesDiv.appendChild(div);
+                });
+                
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+            
+            toggleChat() {
+                document.getElementById('chatWindow').classList.toggle('active');
+            }
+            
+            sendMessage() {
+                const input = document.getElementById('messageInput');
+                const text = input.value.trim();
+                
+                if (text) {
+                    const messagesDiv = document.getElementById('chatMessages');
+                    const div = document.createElement('div');
+                    div.className = 'message sent';
+                    div.innerHTML = `<div class="message-content">${text}</div>`;
+                    messagesDiv.appendChild(div);
+                    
+                    input.value = '';
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    
+                    // Simulate parent reply after 1 second
+                    setTimeout(() => {
+                        const replies = [
+                            'Thank you Doctor!',
+                            'I will follow your advice.',
+                            'When is the next checkup?',
+                            'That is very helpful.'
+                        ];
+                        const reply = replies[Math.floor(Math.random() * replies.length)];
+                        
+                        const replyDiv = document.createElement('div');
+                        replyDiv.className = 'message';
+                        replyDiv.innerHTML = `<div class="message-content">${reply}</div>`;
+                        messagesDiv.appendChild(replyDiv);
+                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    }, 1000);
+                }
+            }
+            
+            logActivity(activity) {
+                const log = {
+                    ...activity,
+                    timestamp: new Date().toISOString(),
+                    id: 'log_' + Date.now()
+                };
+                
+                let logs = JSON.parse(localStorage.getItem('activities_log') || '[]');
+                logs.push(log);
+                localStorage.setItem('activities_log', JSON.stringify(logs));
+            }
+            
+            logout() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            window.expertDashboard = new ExpertDashboard();
+        });
+    </script>
+</body>
+</html>

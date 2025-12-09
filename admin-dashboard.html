@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Smart Parenting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --sidebar-width: 250px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--dark);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            padding: 20px 0;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .logo h2 {
+            font-size: 22px;
+            color: white;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            color: #b3b3b3;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(67, 97, 238, 0.2);
+            color: white;
+            border-left: 4px solid var(--primary);
+        }
+
+        .menu-item i {
+            width: 30px;
+            font-size: 18px;
+        }
+
+        .badge {
+            background: var(--danger);
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            color: var(--dark);
+        }
+
+        .header-left p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification i {
+            font-size: 22px;
+            color: var(--gray);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-text h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stat-icon.users { background: #f72585; }
+        .stat-icon.parents { background: #4361ee; }
+        .stat-icon.experts { background: #4cc9f0; }
+        .stat-icon.children { background: #7209b7; }
+
+        .stat-info h3 {
+            font-size: 28px;
+            color: var(--dark);
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 20px;
+            color: var(--dark);
+            margin: 40px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid #eee;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-verified { background: #d4edda; color: #155724; }
+        .status-blocked { background: #f8d7da; color: #721c24; }
+        .status-active { background: #d1e7dd; color: #0f5132; }
+        .status-inactive { background: #d3d3d3; color: #6c757d; }
+
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e1156d;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* Verification Requests */
+        .verification-requests {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .verification-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .verification-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .verification-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .verification-info h4 {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .verification-docs {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .verification-docs h5 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .verification-docs ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .verification-docs li {
+            padding: 5px 0;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            background: #f8f9fa;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Search Box */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            padding-left: 45px;
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .verification-requests {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-user-shield"></i>
+            <h2>Admin Panel</h2>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active" id="dashboardTab">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="menu-item" id="usersTab">
+                <i class="fas fa-users"></i> Manage Users
+            </a>
+            <a href="#" class="menu-item" id="verificationTab">
+                <i class="fas fa-check-circle"></i> Verifications
+                <span class="badge" id="pendingVerifications">0</span>
+            </a>
+            <a href="#" class="menu-item" id="reportsTab">
+                <i class="fas fa-chart-bar"></i> Reports
+            </a>
+            <a href="#" class="menu-item" id="settingsTab">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" class="menu-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 id="welcomeText">Welcome, Admin!</h1>
+                <p>Manage system users and monitor activities</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="notification" id="notificationBell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count" id="notificationCount">0</span>
+                </div>
+                
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div>
+                        <h4 id="userName">Admin Name</h4>
+                        <p>System Administrator</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Dashboard Tab -->
+            <div id="dashboardContent" class="tab-content">
+                <!-- Welcome Card -->
+                <div class="welcome-card">
+                    <div class="welcome-text">
+                        <h2 id="greetingMessage">Good Morning, Admin!</h2>
+                        <p>You have <span id="pendingCount">0</span> pending verifications and <span id="reportsCount">0</span> reports to review</p>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon users">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Total Users</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon parents">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalParents">0</h3>
+                            <p>Parents</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon experts">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalExperts">0</h3>
+                            <p>Experts</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon children">
+                            <i class="fas fa-child"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalChildren">0</h3>
+                            <p>Children</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="section-title">
+                    <h3>Recent Activities</h3>
+                    <button class="btn btn-primary" id="refreshActivities">Refresh</button>
+                </div>
+                
+                <div class="table-container">
+                    <table id="activitiesTable">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Activity</th>
+                                <th>Type</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Activities will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Recent Signups -->
+                <div class="section-title">
+                    <h3>Recent Signups</h3>
+                </div>
+                
+                <div class="table-container">
+                    <table id="recentSignupsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Recent signups will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Manage Users Tab -->
+            <div id="usersContent" class="tab-content" style="display: none;">
+                <div class="section-title">
+                    <h3>Manage Users</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="userSearch" placeholder="Search users by name, email, or role...">
+                    </div>
+                </div>
+                
+                <div class="tabs" style="margin-top: 20px;">
+                    <div class="tab active" data-user-type="all">All Users</div>
+                    <div class="tab" data-user-type="parent">Parents</div>
+                    <div class="tab" data-user-type="expert">Experts</div>
+                    <div class="tab" data-user-type="admin">Admins</div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Verification Tab -->
+            <div id="verificationContent" class="tab-content" style="display: none;">
+                <div class="section-title">
+                    <h3>Pending Verifications</h3>
+                    <button class="btn btn-primary" id="refreshVerifications">Refresh</button>
+                </div>
+                
+                <div class="verification-requests" id="verificationRequests">
+                    <!-- Verification cards will be loaded here -->
+                </div>
+
+                <div class="section-title">
+                    <h3>Verified Experts</h3>
+                </div>
+                
+                <div class="table-container">
+                    <table id="verifiedExpertsTable">
+                        <thead>
+                            <tr>
+                                <th>Expert</th>
+                                <th>Specialization</th>
+                                <th>Verified On</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Verified experts will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reportsContent" class="tab-content" style="display: none;">
+                <div class="section-title">
+                    <h3>System Reports</h3>
+                    <button class="btn btn-primary" id="generateReportBtn">Generate Monthly Report</button>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #7209b7;">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="monthlyUsers">0</h3>
+                            <p>New Users This Month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #f72585;">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="monthlySuggestions">0</h3>
+                            <p>Expert Suggestions</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #4cc9f0;">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="monthlyRecords">0</h3>
+                            <p>Health Records Added</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #4361ee;">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="monthlyActivities">0</h3>
+                            <p>Activities Logged</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h3>User Activity Report</h3>
+                </div>
+                
+                <div class="table-container">
+                    <table id="activityReportTable">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Last Active</th>
+                                <th>Total Logins</th>
+                                <th>Activities</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Activity report will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settingsContent" class="tab-content" style="display: none;">
+                <div class="section-title">
+                    <h3>System Settings</h3>
+                </div>
+                
+                <div class="table-container" style="padding: 30px;">
+                    <div class="form-group">
+                        <label>System Name</label>
+                        <input type="text" id="systemName" value="Smart Parenting System">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Admin Email</label>
+                        <input type="email" id="adminEmail" value="admin@smartparenting.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Default User Role</label>
+                        <select id="defaultRole">
+                            <option value="parent">Parent</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Auto-verify Users</label>
+                        <select id="autoVerify">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>System Maintenance</label>
+                        <select id="maintenanceMode">
+                            <option value="off">Off</option>
+                            <option value="on">On</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-block" id="saveSettings">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- User Details Modal -->
+    <div class="modal" id="userDetailsModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeUserModal">&times;</button>
+            <h2>User Details</h2>
+            <div id="userDetailsContent">
+                <!-- User details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Decision Modal -->
+    <div class="modal" id="verificationModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeVerificationModal">&times;</button>
+            <h2>Verify Expert</h2>
+            <form id="verificationForm">
+                <input type="hidden" id="verifyUserId">
+                
+                <div class="form-group">
+                    <label>Decision</label>
+                    <select id="verificationDecision" required>
+                        <option value="">Select Decision</option>
+                        <option value="approve">Approve</option>
+                        <option value="reject">Reject</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Comments (Optional)</label>
+                    <textarea id="verificationComments" rows="3" placeholder="Add comments for the user..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Submit Decision</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class AdminDashboard {
+            constructor() {
+                this.currentUser = null;
+                this.users = [];
+                this.experts = [];
+                this.parents = [];
+                this.children = [];
+                this.initialize();
+            }
+            
+            initialize() {
+                this.checkAuthentication();
+                this.loadData();
+                this.setupEventListeners();
+                this.updateDashboard();
+                this.loadUsers();
+            }
+            
+            checkAuthentication() {
+                const token = localStorage.getItem('token');
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (!token || user.role !== 'admin') {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                this.currentUser = user;
+                this.updateUserInfo();
+            }
+            
+            updateUserInfo() {
+                document.getElementById('userName').textContent = this.currentUser.name;
+                document.getElementById('userAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                document.getElementById('welcomeText').textContent = `Welcome, ${this.currentUser.name}!`;
+                
+                // Set greeting based on time
+                const hour = new Date().getHours();
+                let greeting = 'Good Morning, Admin!';
+                if (hour >= 12 && hour < 17) greeting = 'Good Afternoon, Admin!';
+                if (hour >= 17) greeting = 'Good Evening, Admin!';
+                document.getElementById('greetingMessage').textContent = greeting;
+            }
+            
+            loadData() {
+                this.users = JSON.parse(localStorage.getItem('users') || '[]');
+                this.parents = this.users.filter(u => u.role === 'parent');
+                this.experts = this.users.filter(u => u.role === 'expert');
+                this.children = JSON.parse(localStorage.getItem('children') || '[]');
+            }
+            
+            setupEventListeners() {
+                // Menu tabs
+                document.getElementById('dashboardTab').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchTab('dashboard');
+                });
+                
+                document.getElementById('usersTab').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchTab('users');
+                });
+                
+                document.getElementById('verificationTab').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchTab('verification');
+                });
+                
+                document.getElementById('reportsTab').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchTab('reports');
+                });
+                
+                document.getElementById('settingsTab').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchTab('settings');
+                });
+                
+                document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.logout();
+                });
+                
+                // User type tabs
+                document.querySelectorAll('[data-user-type]').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const userType = tab.dataset.userType;
+                        this.filterUsers(userType);
+                    });
+                });
+                
+                // Search
+                document.getElementById('userSearch').addEventListener('input', (e) => {
+                    this.searchUsers(e.target.value);
+                });
+                
+                // Buttons
+                document.getElementById('refreshActivities').addEventListener('click', () => {
+                    this.updateDashboard();
+                    alert('Activities refreshed!');
+                });
+                
+                document.getElementById('refreshVerifications').addEventListener('click', () => {
+                    this.loadVerifications();
+                    alert('Verifications refreshed!');
+                });
+                
+                document.getElementById('generateReportBtn').addEventListener('click', () => {
+                    this.generateMonthlyReport();
+                });
+                
+                document.getElementById('saveSettings').addEventListener('click', () => {
+                    this.saveSettings();
+                });
+                
+                // Modal close buttons
+                document.getElementById('closeUserModal').addEventListener('click', () => {
+                    document.getElementById('userDetailsModal').classList.remove('active');
+                });
+                
+                document.getElementById('closeVerificationModal').addEventListener('click', () => {
+                    document.getElementById('verificationModal').classList.remove('active');
+                });
+                
+                // Verification form
+                document.getElementById('verificationForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.submitVerification();
+                });
+                
+                // Close modals when clicking outside
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                        }
+                    });
+                });
+            }
+            
+            switchTab(tabName) {
+                // Update active menu item
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                document.getElementById(tabName + 'Tab').classList.add('active');
+                
+                // Show corresponding tab content
+                const tabs = ['dashboard', 'users', 'verification', 'reports', 'settings'];
+                tabs.forEach(tab => {
+                    document.getElementById(tab + 'Content').style.display = 'none';
+                });
+                
+                document.getElementById(tabName + 'Content').style.display = 'block';
+                
+                // Load tab-specific data
+                if (tabName === 'dashboard') {
+                    this.updateDashboard();
+                } else if (tabName === 'users') {
+                    this.loadUsers();
+                } else if (tabName === 'verification') {
+                    this.loadVerifications();
+                } else if (tabName === 'reports') {
+                    this.loadReports();
+                } else if (tabName === 'settings') {
+                    this.loadSettings();
+                }
+            }
+            
+            updateDashboard() {
+                this.loadData();
+                
+                // Update stats
+                document.getElementById('totalUsers').textContent = this.users.length;
+                document.getElementById('totalParents').textContent = this.parents.length;
+                document.getElementById('totalExperts').textContent = this.experts.length;
+                document.getElementById('totalChildren').textContent = this.children.length;
+                
+                // Count pending verifications
+                const pendingExperts = this.experts.filter(e => e.status === 'pending' || !e.status);
+                document.getElementById('pendingCount').textContent = pendingExperts.length;
+                document.getElementById('pendingVerifications').textContent = pendingExperts.length;
+                
+                // Update notification count
+                document.getElementById('notificationCount').textContent = pendingExperts.length;
+                
+                // Load recent activities
+                this.loadRecentActivities();
+                
+                // Load recent signups
+                this.loadRecentSignups();
+            }
+            
+            loadRecentActivities() {
+                const activities = JSON.parse(localStorage.getItem('activities_log') || '[]')
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                    .slice(0, 10);
+                
+                const tbody = document.getElementById('activitiesTable').querySelector('tbody');
+                
+                if (activities.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-history" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                No recent activities
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = activities.map(activity => {
+                    const timeAgo = this.getTimeAgo(new Date(activity.timestamp));
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 30px; height: 30px; background: #4361ee; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                                        ${activity.userName?.charAt(0) || 'U'}
+                                    </div>
+                                    ${activity.userName || 'Unknown'}
+                                </div>
+                            </td>
+                            <td>${activity.action}</td>
+                            <td>${activity.type}</td>
+                            <td>${timeAgo}</td>
+                            <td><span class="status-badge status-active">${activity.status || 'Completed'}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            loadRecentSignups() {
+                const recentUsers = [...this.users]
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    .slice(0, 10);
+                
+                const tbody = document.getElementById('recentSignupsTable').querySelector('tbody');
+                
+                if (recentUsers.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-users" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                No users found
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = recentUsers.map(user => {
+                    const status = user.status || 'active';
+                    const statusClass = status === 'active' ? 'status-active' : 
+                                      status === 'blocked' ? 'status-blocked' : 
+                                      status === 'pending' ? 'status-pending' : 'status-inactive';
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 30px; height: 30px; background: #f72585; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                                        ${user.name?.charAt(0) || 'U'}
+                                    </div>
+                                    ${user.name}
+                                </div>
+                            </td>
+                            <td>${user.email}</td>
+                            <td><span class="status-badge">${user.role}</span></td>
+                            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                            <td><span class="status-badge ${statusClass}">${status}</span></td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn btn-sm btn-primary" onclick="window.adminDashboard.viewUserDetails('${user.id}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    ${user.role !== 'admin' ? `
+                                        <button class="btn btn-sm ${status === 'active' ? 'btn-danger' : 'btn-success'}" 
+                                                onclick="window.adminDashboard.toggleUserStatus('${user.id}', '${status}')">
+                                            <i class="fas ${status === 'active' ? 'fa-ban' : 'fa-check'}"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            loadUsers() {
+                const tbody = document.getElementById('usersTable').querySelector('tbody');
+                
+                if (this.users.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-users" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                No users found
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = this.users.map(user => {
+                    const status = user.status || 'active';
+                    const statusClass = status === 'active' ? 'status-active' : 
+                                      status === 'blocked' ? 'status-blocked' : 
+                                      status === 'pending' ? 'status-pending' : 'status-inactive';
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 30px; height: 30px; background: #f72585; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                                        ${user.name?.charAt(0) || 'U'}
+                                    </div>
+                                    ${user.name}
+                                </div>
+                            </td>
+                            <td>${user.email}</td>
+                            <td>${user.phone || 'N/A'}</td>
+                            <td><span class="status-badge">${user.role}</span></td>
+                            <td><span class="status-badge ${statusClass}">${status}</span></td>
+                            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn btn-sm btn-primary" onclick="window.adminDashboard.viewUserDetails('${user.id}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    ${user.role !== 'admin' ? `
+                                        <button class="btn btn-sm ${status === 'active' ? 'btn-danger' : 'btn-success'}" 
+                                                onclick="window.adminDashboard.toggleUserStatus('${user.id}', '${status}')">
+                                            <i class="fas ${status === 'active' ? 'fa-ban' : 'fa-check'}"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-warning" onclick="window.adminDashboard.deleteUser('${user.id}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            filterUsers(userType) {
+                document.querySelectorAll('[data-user-type]').forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.dataset.userType === userType) {
+                        tab.classList.add('active');
+                    }
+                });
+                
+                let filteredUsers = this.users;
+                if (userType !== 'all') {
+                    filteredUsers = this.users.filter(u => u.role === userType);
+                }
+                
+                const tbody = document.getElementById('usersTable').querySelector('tbody');
+                
+                if (filteredUsers.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-users" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                No ${userType} users found
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = filteredUsers.map(user => {
+                    const status = user.status || 'active';
+                    const statusClass = status === 'active' ? 'status-active' : 
+                                      status === 'blocked' ? 'status-blocked' : 
+                                      status === 'pending' ? 'status-pending' : 'status-inactive';
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 30px; height: 30px; background: #f72585; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                                        ${user.name?.charAt(0) || 'U'}
+                                    </div>
+                                    ${user.name}
+                                </div>
+                            </td>
+                            <td>${user.email}</td>
+                            <td>${user.phone || 'N/A'}</td>
+                            <td><span class="status-badge">${user.role}</span></td>
+                            <td><span class="status-badge ${statusClass}">${status}</span></td>
+                            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn btn-sm btn-primary" onclick="window.adminDashboard.viewUserDetails('${user.id}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    ${user.role !== 'admin' ? `
+                                        <button class="btn btn-sm ${status === 'active' ? 'btn-danger' : 'btn-success'}" 
+                                                onclick="window.adminDashboard.toggleUserStatus('${user.id}', '${status}')">
+                                            <i class="fas ${status === 'active' ? 'fa-ban' : 'fa-check'}"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-warning" onclick="window.adminDashboard.deleteUser('${user.id}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            searchUsers(query) {
+                const filteredUsers = this.users.filter(user => {
+                    const searchStr = query.toLowerCase();
+                    return user.name.toLowerCase().includes(searchStr) ||
+                           user.email.toLowerCase().includes(searchStr) ||
+                           user.role.toLowerCase().includes(searchStr) ||
+                           (user.phone && user.phone.includes(searchStr));
+                });
+                
+                const tbody = document.getElementById('usersTable').querySelector('tbody');
+                
+                if (filteredUsers.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-search" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                No users found for "${query}"
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = filteredUsers.map(user => {
+                    const status = user.status || 'active';
+                    const statusClass = status === 'active' ? 'status-active' : 
+                                      status === 'blocked' ? 'status-blocked' : 
+                                      status === 'pending' ? 'status-pending' : 'status-inactive';
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 30px; height: 30px; background: #f72585; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                                        ${user.name?.charAt(0) || 'U'}
+                                    </div>
+                                    ${user.name}
+                                </div>
+                            </td>
+                            <td>${user.email}</td>
+                            <td>${user.phone || 'N/A'}</td>
+                            <td><span class="status-badge">${user.role}</span></td>
+                            <td><span class="status-badge ${statusClass}">${status}</span></td>
+                            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn btn-sm btn-primary" onclick="window.adminDashboard.viewUserDetails('${user.id}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    ${user.role !== 'admin' ? `
+                                        <button class="btn btn-sm ${status === 'active' ? 'btn-danger' : 'btn-success'}" 
+                                                onclick="window.adminDashboard.toggleUserStatus('${user.id}', '${status}')">
+                                            <i class="fas ${status === 'active' ? 'fa-ban' : 'fa-check'}"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-warning" onclick="window.adminDashboard.deleteUser('${user.id}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            loadVerifications() {
+                const pendingExperts = this.experts.filter(e => e.status === 'pending' || !e.status);
+                const verifiedExperts = this.experts.filter(e => e.status === 'verified');
+                
+                // Update pending verifications count
+                document.getElementById('pendingVerifications').textContent = pendingExperts.length;
+                
+                // Load pending verification requests
+                const requestsContainer = document.getElementById('verificationRequests');
+                
+                if (pendingExperts.length === 0) {
+                    requestsContainer.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: white; border-radius: 15px;">
+                            <i class="fas fa-check-circle" style="font-size: 48px; color: #4cc9f0; margin-bottom: 20px;"></i>
+                            <h3 style="color: var(--gray); margin-bottom: 10px;">No Pending Verifications</h3>
+                            <p style="color: var(--gray);">All experts are verified</p>
+                        </div>
+                    `;
+                } else {
+                    requestsContainer.innerHTML = pendingExperts.map(expert => {
+                        return `
+                            <div class="verification-card">
+                                <div class="verification-header">
+                                    <div class="verification-avatar">${expert.name.charAt(0)}</div>
+                                    <div class="verification-info">
+                                        <h4>${expert.name}</h4>
+                                        <p>${expert.email}</p>
+                                        <p><small>Applied: ${new Date(expert.createdAt).toLocaleDateString()}</small></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="verification-docs">
+                                    <h5>Verification Documents:</h5>
+                                    <ul>
+                                        <li><i class="fas fa-file-medical"></i> Medical License: ${expert.medicalLicense || 'Not provided'}</li>
+                                        <li><i class="fas fa-graduation-cap"></i> Degree: ${expert.degree || 'Not provided'}</li>
+                                        <li><i class="fas fa-briefcase"></i> Experience: ${expert.experience || '0'} years</li>
+                                        <li><i class="fas fa-star"></i> Specialization: ${expert.specialization || 'General'}</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="action-btns" style="justify-content: space-between;">
+                                    <button class="btn btn-success" onclick="window.adminDashboard.approveVerification('${expert.id}')">
+                                        <i class="fas fa-check"></i> Approve
+                                    </button>
+                                    <button class="btn btn-danger" onclick="window.adminDashboard.rejectVerification('${expert.id}')">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                    <button class="btn btn-primary" onclick="window.adminDashboard.openVerificationModal('${expert.id}')">
+                                        <i class="fas fa-eye"></i> Review
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                
+                // Load verified experts table
+                const tbody = document.getElementById('verifiedExpertsTable').querySelector('tbody');
+                
+                if (verifiedExperts.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-user-md" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                No verified experts yet
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = verifiedExperts.map(expert => {
+                    const verifiedDate = expert.verifiedAt ? new Date(expert.verifiedAt).toLocaleDateString() : 'N/A';
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 30px; height: 30px; background: #4cc9f0; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                                        ${expert.name?.charAt(0) || 'E'}
+                                    </div>
+                                    ${expert.name}
+                                </div>
+                            </td>
+                            <td>${expert.specialization || 'General'}</td>
+                            <td>${verifiedDate}</td>
+                            <td><span class="status-badge status-verified">Verified</span></td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn btn-sm btn-primary" onclick="window.adminDashboard.viewUserDetails('${expert.id}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" onclick="window.adminDashboard.revokeVerification('${expert.id}')">
+                                        <i class="fas fa-user-times"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            loadReports() {
+                const currentMonth = new Date().getMonth();
+                const currentYear = new Date().getFullYear();
+                
+                // Monthly new users
+                const monthlyUsers = this.users.filter(u => {
+                    const userDate = new Date(u.createdAt);
+                    return userDate.getMonth() === currentMonth && userDate.getFullYear() === currentYear;
+                });
+                document.getElementById('monthlyUsers').textContent = monthlyUsers.length;
+                
+                // Monthly suggestions
+                const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]');
+                const monthlySuggestions = suggestions.filter(s => {
+                    const suggestionDate = new Date(s.date);
+                    return suggestionDate.getMonth() === currentMonth && suggestionDate.getFullYear() === currentYear;
+                });
+                document.getElementById('monthlySuggestions').textContent = monthlySuggestions.length;
+                
+                // Monthly health records
+                const healthRecords = JSON.parse(localStorage.getItem('healthRecords') || '[]');
+                const monthlyRecords = healthRecords.filter(r => {
+                    const recordDate = new Date(r.date);
+                    return recordDate.getMonth() === currentMonth && recordDate.getFullYear() === currentYear;
+                });
+                document.getElementById('monthlyRecords').textContent = monthlyRecords.length;
+                
+                // Monthly activities
+                const activities = JSON.parse(localStorage.getItem('activities') || '[]');
+                const monthlyActivities = activities.filter(a => {
+                    const activityDate = new Date(a.date);
+                    return activityDate.getMonth() === currentMonth && activityDate.getFullYear() === currentYear;
+                });
+                document.getElementById('monthlyActivities').textContent = monthlyActivities.length;
+                
+                // Load activity report
+                this.loadActivityReport();
+            }
+            
+            loadActivityReport() {
+                const tbody = document.getElementById('activityReportTable').querySelector('tbody');
+                const activityLog = JSON.parse(localStorage.getItem('activities_log') || '[]');
+                
+                // Group activities by user
+                const userActivities = {};
+                activityLog.forEach(log => {
+                    if (!userActivities[log.userId]) {
+                        userActivities[log.userId] = {
+                            user: this.users.find(u => u.id === log.userId),
+                            logs: [],
+                            lastActive: null,
+                            loginCount: 0
+                        };
+                    }
+                    userActivities[log.userId].logs.push(log);
+                    
+                    // Update last active
+                    const logTime = new Date(log.timestamp);
+                    if (!userActivities[log.userId].lastActive || logTime > userActivities[log.userId].lastActive) {
+                        userActivities[log.userId].lastActive = logTime;
+                    }
+                    
+                    // Count logins
+                    if (log.action === 'User logged in') {
+                        userActivities[log.userId].loginCount++;
+                    }
+                });
+                
+                const userReports = Object.values(userActivities);
+                
+                if (userReports.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-chart-line" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                No activity data available
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = userReports.map(report => {
+                    const user = report.user;
+                    if (!user) return '';
+                    
+                    const status = user.status || 'active';
+                    const statusClass = status === 'active' ? 'status-active' : 
+                                      status === 'blocked' ? 'status-blocked' : 'status-inactive';
+                    
+                    const lastActive = report.lastActive ? this.getTimeAgo(report.lastActive) : 'Never';
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 30px; height: 30px; background: #4361ee; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                                        ${user.name?.charAt(0) || 'U'}
+                                    </div>
+                                    ${user.name}
+                                </div>
+                            </td>
+                            <td><span class="status-badge">${user.role}</span></td>
+                            <td>${lastActive}</td>
+                            <td>${report.loginCount}</td>
+                            <td>${report.logs.length}</td>
+                            <td><span class="status-badge ${statusClass}">${status}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            loadSettings() {
+                // Load settings from localStorage or use defaults
+                const settings = JSON.parse(localStorage.getItem('admin_settings') || '{}');
+                
+                document.getElementById('systemName').value = settings.systemName || 'Smart Parenting System';
+                document.getElementById('adminEmail').value = settings.adminEmail || 'admin@smartparenting.com';
+                document.getElementById('defaultRole').value = settings.defaultRole || 'parent';
+                document.getElementById('autoVerify').value = settings.autoVerify || 'no';
+                document.getElementById('maintenanceMode').value = settings.maintenanceMode || 'off';
+            }
+            
+            viewUserDetails(userId) {
+                const user = this.users.find(u => u.id === userId);
+                if (!user) {
+                    alert('User not found');
+                    return;
+                }
+                
+                const children = this.children.filter(c => c.parentId === userId);
+                const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]')
+                    .filter(s => s.expertId === userId);
+                
+                const content = document.getElementById('userDetailsContent');
+                content.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+                        <div style="width: 80px; height: 80px; background: #f72585; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 600;">
+                            ${user.name.charAt(0)}
+                        </div>
+                        <div>
+                            <h3 style="color: var(--dark); margin-bottom: 5px;">${user.name}</h3>
+                            <p style="color: var(--gray); margin-bottom: 5px;">${user.email}</p>
+                            <p style="color: var(--gray);">Role: <span class="status-badge">${user.role}</span></p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4 style="color: var(--gray); margin-bottom: 10px;">Contact Info</h4>
+                            <p><strong>Phone:</strong> ${user.phone || 'N/A'}</p>
+                            <p><strong>Address:</strong> ${user.address || 'N/A'}</p>
+                            <p><strong>Joined:</strong> ${new Date(user.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4 style="color: var(--gray); margin-bottom: 10px;">Account Status</h4>
+                            <p><strong>Status:</strong> <span class="status-badge ${user.status === 'active' ? 'status-active' : user.status === 'blocked' ? 'status-blocked' : 'status-pending'}">${user.status || 'active'}</span></p>
+                            <p><strong>Last Login:</strong> ${user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never'}</p>
+                            <p><strong>Email Verified:</strong> ${user.emailVerified ? 'Yes' : 'No'}</p>
+                        </div>
+                    </div>
+                    
+                    ${user.role === 'parent' ? `
+                        <div style="margin-bottom: 30px;">
+                            <h4 style="color: var(--dark); margin-bottom: 15px;">Children (${children.length})</h4>
+                            ${children.length > 0 ? children.map(child => `
+                                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                                    <strong>${child.name}</strong> - ${child.gender} - ${this.calculateAge(child.dob)} years
+                                </div>
+                            `).join('') : '<p style="color: var(--gray);">No children registered</p>'}
+                        </div>
+                    ` : ''}
+                    
+                    ${user.role === 'expert' ? `
+                        <div style="margin-bottom: 30px;">
+                            <h4 style="color: var(--dark); margin-bottom: 15px;">Expert Details</h4>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                                <p><strong>Specialization:</strong> ${user.specialization || 'N/A'}</p>
+                                <p><strong>Experience:</strong> ${user.experience || '0'} years</p>
+                                <p><strong>Qualifications:</strong> ${user.qualifications || 'N/A'}</p>
+                                <p><strong>Suggestions Given:</strong> ${suggestions.length}</p>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="action-btns" style="margin-top: 30px;">
+                        ${user.role !== 'admin' ? `
+                            <button class="btn ${user.status === 'active' ? 'btn-danger' : 'btn-success'}" 
+                                    onclick="window.adminDashboard.toggleUserStatus('${user.id}', '${user.status}')">
+                                <i class="fas ${user.status === 'active' ? 'fa-ban' : 'fa-check'}"></i>
+                                ${user.status === 'active' ? 'Block User' : 'Activate User'}
+                            </button>
+                            <button class="btn btn-warning" onclick="window.adminDashboard.deleteUser('${user.id}')">
+                                <i class="fas fa-trash"></i> Delete User
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-primary" onclick="document.getElementById('userDetailsModal').classList.remove('active')">
+                            Close
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('userDetailsModal').classList.add('active');
+            }
+            
+            toggleUserStatus(userId, currentStatus) {
+                const user = this.users.find(u => u.id === userId);
+                if (!user) {
+                    alert('User not found');
+                    return;
+                }
+                
+                if (user.role === 'admin') {
+                    alert('Cannot modify admin user status');
+                    return;
+                }
+                
+                const newStatus = currentStatus === 'active' ? 'blocked' : 'active';
+                const confirmMessage = newStatus === 'blocked' 
+                    ? `Are you sure you want to block ${user.name}?`
+                    : `Are you sure you want to activate ${user.name}?`;
+                
+                if (confirm(confirmMessage)) {
+                    user.status = newStatus;
+                    user.updatedAt = new Date().toISOString();
+                    
+                    // Save updated users
+                    localStorage.setItem('users', JSON.stringify(this.users));
+                    
+                    // Log activity
+                    this.logActivity({
+                        userId: this.currentUser.id,
+                        userName: this.currentUser.name,
+                        action: `${newStatus === 'blocked' ? 'Blocked' : 'Activated'} user`,
+                        type: 'user_management',
+                        details: `User ${user.name} (${user.email}) was ${newStatus === 'blocked' ? 'blocked' : 'activated'}`
+                    });
+                    
+                    alert(`User ${newStatus === 'blocked' ? 'blocked' : 'activated'} successfully!`);
+                    
+                    // Refresh data
+                    this.loadData();
+                    this.loadUsers();
+                    this.updateDashboard();
+                    
+                    // Close modal if open
+                    document.getElementById('userDetailsModal').classList.remove('active');
+                }
+            }
+            
+            deleteUser(userId) {
+                const user = this.users.find(u => u.id === userId);
+                if (!user) {
+                    alert('User not found');
+                    return;
+                }
+                
+                if (user.role === 'admin') {
+                    alert('Cannot delete admin user');
+                    return;
+                }
+                
+                if (confirm(`Are you sure you want to delete ${user.name}? This action cannot be undone.`)) {
+                    // Remove user
+                    this.users = this.users.filter(u => u.id !== userId);
+                    localStorage.setItem('users', JSON.stringify(this.users));
+                    
+                    // If user is parent, also remove their children
+                    if (user.role === 'parent') {
+                        let children = JSON.parse(localStorage.getItem('children') || '[]');
+                        children = children.filter(c => c.parentId !== userId);
+                        localStorage.setItem('children', JSON.stringify(children));
+                    }
+                    
+                    // If user is expert, remove their suggestions
+                    if (user.role === 'expert') {
+                        let suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]');
+                        suggestions = suggestions.filter(s => s.expertId !== userId);
+                        localStorage.setItem('suggestions', JSON.stringify(suggestions));
+                        
+                        // Remove assignments
+                        let assignments = JSON.parse(localStorage.getItem('assignments') || '[]');
+                        assignments = assignments.filter(a => a.expertId !== userId);
+                        localStorage.setItem('assignments', JSON.stringify(assignments));
+                    }
+                    
+                    // Log activity
+                    this.logActivity({
+                        userId: this.currentUser.id,
+                        userName: this.currentUser.name,
+                        action: 'Deleted user',
+                        type: 'user_management',
+                        details: `User ${user.name} (${user.email}) was deleted from the system`
+                    });
+                    
+                    alert('User deleted successfully!');
+                    
+                    // Refresh data
+                    this.loadData();
+                    this.loadUsers();
+                    this.updateDashboard();
+                    
+                    // Close modal if open
+                    document.getElementById('userDetailsModal').classList.remove('active');
+                }
+            }
+            
+            approveVerification(userId) {
+                this.handleVerification(userId, 'approve');
+            }
+            
+            rejectVerification(userId) {
+                this.handleVerification(userId, 'reject');
+            }
+            
+            openVerificationModal(userId) {
+                document.getElementById('verifyUserId').value = userId;
+                document.getElementById('verificationModal').classList.add('active');
+            }
+            
+            submitVerification() {
+                const userId = document.getElementById('verifyUserId').value;
+                const decision = document.getElementById('verificationDecision').value;
+                const comments = document.getElementById('verificationComments').value;
+                
+                if (!decision) {
+                    alert('Please select a decision');
+                    return;
+                }
+                
+                this.handleVerification(userId, decision, comments);
+                document.getElementById('verificationModal').classList.remove('active');
+                document.getElementById('verificationForm').reset();
+            }
+            
+            handleVerification(userId, decision, comments = '') {
+                const user = this.users.find(u => u.id === userId);
+                if (!user || user.role !== 'expert') {
+                    alert('Expert not found');
+                    return;
+                }
+                
+                user.status = decision === 'approve' ? 'verified' : 'rejected';
+                user.verifiedAt = decision === 'approve' ? new Date().toISOString() : null;
+                user.verificationComments = comments;
+                user.verifiedBy = this.currentUser.name;
+                user.updatedAt = new Date().toISOString();
+                
+                // Save updated users
+                localStorage.setItem('users', JSON.stringify(this.users));
+                
+                // Log activity
+                this.logActivity({
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    action: `${decision === 'approve' ? 'Approved' : 'Rejected'} expert verification`,
+                    type: 'verification',
+                    details: `Expert ${user.name} verification ${decision === 'approve' ? 'approved' : 'rejected'}${comments ? ': ' + comments : ''}`
+                });
+                
+                alert(`Expert verification ${decision === 'approve' ? 'approved' : 'rejected'} successfully!`);
+                
+                // Refresh data
+                this.loadData();
+                this.loadVerifications();
+                this.updateDashboard();
+            }
+            
+            revokeVerification(userId) {
+                const user = this.users.find(u => u.id === userId);
+                if (!user || user.role !== 'expert') {
+                    alert('Expert not found');
+                    return;
+                }
+                
+                if (confirm(`Are you sure you want to revoke verification for ${user.name}?`)) {
+                    user.status = 'pending';
+                    user.verifiedAt = null;
+                    user.verificationComments = 'Verification revoked by admin';
+                    user.updatedAt = new Date().toISOString();
+                    
+                    // Save updated users
+                    localStorage.setItem('users', JSON.stringify(this.users));
+                    
+                    // Log activity
+                    this.logActivity({
+                        userId: this.currentUser.id,
+                        userName: this.currentUser.name,
+                        action: 'Revoked expert verification',
+                        type: 'verification',
+                        details: `Expert ${user.name} verification revoked`
+                    });
+                    
+                    alert('Verification revoked successfully!');
+                    
+                    // Refresh data
+                    this.loadData();
+                    this.loadVerifications();
+                    this.updateDashboard();
+                }
+            }
+            
+            generateMonthlyReport() {
+                const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+                
+                const reportData = `
+                    <h3>Monthly Report - ${currentMonth}</h3>
+                    <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+                    <p><strong>Generated By:</strong> ${this.currentUser.name}</p>
+                    
+                    <h4>Statistics:</h4>
+                    <ul>
+                        <li><strong>Total Users:</strong> ${this.users.length}</li>
+                        <li><strong>Parents:</strong> ${this.parents.length}</li>
+                        <li><strong>Experts:</strong> ${this.experts.length}</li>
+                        <li><strong>Children:</strong> ${this.children.length}</li>
+                        <li><strong>New Users This Month:</strong> ${document.getElementById('monthlyUsers').textContent}</li>
+                        <li><strong>Suggestions This Month:</strong> ${document.getElementById('monthlySuggestions').textContent}</li>
+                        <li><strong>Health Records This Month:</strong> ${document.getElementById('monthlyRecords').textContent}</li>
+                        <li><strong>Activities This Month:</strong> ${document.getElementById('monthlyActivities').textContent}</li>
+                    </ul>
+                    
+                    <h4>Pending Actions:</h4>
+                    <ul>
+                        <li><strong>Pending Verifications:</strong> ${document.getElementById('pendingVerifications').textContent}</li>
+                        <li><strong>Blocked Users:</strong> ${this.users.filter(u => u.status === 'blocked').length}</li>
+                    </ul>
+                `;
+                
+                // Create a new window with the report
+                const reportWindow = window.open('', '_blank');
+                reportWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>Monthly Report - ${currentMonth}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 20px; }
+                            h3, h4 { color: #333; }
+                            p { margin: 10px 0; }
+                            ul { margin-left: 20px; }
+                            li { margin: 5px 0; }
+                        </style>
+                    </head>
+                    <body>
+                        ${reportData}
+                        <br><br>
+                        <button onclick="window.print()" style="padding: 10px 20px; background: #4361ee; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Print Report
+                        </button>
+                    </body>
+                    </html>
+                `);
+            }
+            
+            saveSettings() {
+                const settings = {
+                    systemName: document.getElementById('systemName').value,
+                    adminEmail: document.getElementById('adminEmail').value,
+                    defaultRole: document.getElementById('defaultRole').value,
+                    autoVerify: document.getElementById('autoVerify').value,
+                    maintenanceMode: document.getElementById('maintenanceMode').value,
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: this.currentUser.name
+                };
+                
+                localStorage.setItem('admin_settings', JSON.stringify(settings));
+                
+                // Log activity
+                this.logActivity({
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    action: 'Updated system settings',
+                    type: 'settings',
+                    details: 'System settings were updated'
+                });
+                
+                alert('Settings saved successfully!');
+            }
+            
+            calculateAge(dob) {
+                const birthDate = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+            
+            getTimeAgo(date) {
+                const now = new Date();
+                const diff = now - date;
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(diff / 3600000);
+                const days = Math.floor(diff / 86400000);
+                
+                if (minutes < 60) {
+                    return `${minutes} min ago`;
+                } else if (hours < 24) {
+                    return `${hours} hours ago`;
+                } else {
+                    return `${days} days ago`;
+                }
+            }
+            
+            logActivity(activity) {
+                const log = {
+                    ...activity,
+                    timestamp: new Date().toISOString(),
+                    id: 'log_' + Date.now()
+                };
+                
+                let logs = JSON.parse(localStorage.getItem('activities_log') || '[]');
+                logs.push(log);
+                localStorage.setItem('activities_log', JSON.stringify(logs));
+            }
+            
+            logout() {
+                if (confirm('Are you sure you want to logout?')) {
+                    // Log activity
+                    this.logActivity({
+                        userId: this.currentUser.id,
+                        userName: this.currentUser.name,
+                        action: 'Admin logged out',
+                        type: 'auth',
+                        details: 'Admin user logged out of the system'
+                    });
+                    
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+        
+        // Initialize admin dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            window.adminDashboard = new AdminDashboard();
+        });
+    </script>
+</body>
+</html>

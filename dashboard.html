@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart Parenting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            font-size: 48px;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 36px;
+            color: var(--dark);
+        }
+
+        .header p {
+            color: #666;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+
+        .parent-icon {
+            background: linear-gradient(135deg, #f72585 0%, #e1156d 100%);
+            color: white;
+        }
+
+        .expert-icon {
+            background: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+            color: white;
+        }
+
+        .admin-icon {
+            background: linear-gradient(135deg, #7209b7 0%, #560bad 100%);
+            color: white;
+        }
+
+        .dashboard-card h3 {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .card-btn:hover {
+            background: var(--secondary);
+        }
+
+        .instructions {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 40px;
+        }
+
+        .instructions h2 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+            margin-bottom: 30px;
+        }
+
+        .instructions li {
+            margin-bottom: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--dark);
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .login-prompt {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .login-prompt a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .instructions {
+                padding: 30px 20px;
+            }
+            
+            .header {
+                padding: 30px 0;
+            }
+            
+            .logo h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-child"></i>
+                <h1>Smart Parenting Platform</h1>
+            </div>
+            <p>Select your role to access the appropriate dashboard</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <a href="parent-dashboard.html" class="dashboard-card">
+                <div class="card-icon parent-icon">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <h3>Parent Dashboard</h3>
+                <p>Track your children's development, monitor health and education progress, and receive expert suggestions.</p>
+                <div class="card-btn">Access as Parent</div>
+            </a>
+            
+            <a href="expert-dashboard.html" class="dashboard-card">
+                <div class="card-icon expert-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>Expert Dashboard</h3>
+                <p>Monitor assigned cases, provide guidance to parents, and track children's development progress.</p>
+                <div class="card-btn">Access as Expert</div>
+            </a>
+            
+            <a href="admin-dashboard.html" class="dashboard-card">
+                <div class="card-icon admin-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3>Admin Dashboard</h3>
+                <p>Manage users, verify experts, monitor system activities, and generate reports.</p>
+                <div class="card-btn">Access as Admin</div>
+            </a>
+        </div>
+        
+        <div class="instructions">
+            <h2>How to Get Started</h2>
+            <ol>
+                <li><strong>New Users:</strong> Click "Sign Up" to create your account as a Parent, Expert, or Administrator.</li>
+                <li><strong>Existing Users:</strong> Select your role above to access your dashboard.</li>
+                <li><strong>Parents:</strong> Add your children's profiles to start tracking their development.</li>
+                <li><strong>Experts:</strong> Wait for admin verification before accessing full features.</li>
+                <li><strong>Need Help?</strong> Contact support at support@smartparenting.com</li>
+            </ol>
+            
+            <div class="login-prompt">
+                Already have an account? <a href="login.html">Login here</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2024 Smart Parenting Platform. All rights reserved.</p>
+        <p><a href="index.html">Home</a> | <a href="login.html">Login</a> | <a href="register.html">Register</a></p>
+    </div>
+
+    <script>
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            if (token && user.role) {
+                // Redirect to appropriate dashboard
+                switch(user.role) {
+                    case 'parent':
+                        window.location.href = 'parent-dashboard.html';
+                        break;
+                    case 'expert':
+                        window.location.href = 'expert-dashboard.html';
+                        break;
+                    case 'admin':
+                        window.location.href = 'admin-dashboard.html';
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

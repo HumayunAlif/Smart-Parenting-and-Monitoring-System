@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Parenting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fb 0%, #e3e6ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .left-side {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .logo i {
+            font-size: 40px;
+            color: white;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .welcome-text h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .welcome-text p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .features {
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .right-side {
+            flex: 1;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .login-form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .input-with-icon input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-with-icon input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .remember input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 25px;
+        }
+
+        .login-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 20px;
+            color: #666;
+            position: relative;
+        }
+
+        .role-selection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .role-btn {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .role-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .role-btn.active {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .role-btn i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left-side {
+                padding: 40px 20px;
+            }
+            
+            .right-side {
+                padding: 40px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .role-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .remember-forgot {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <div class="logo">
+                <i class="fas fa-child"></i>
+                <h1>Smart Parenting</h1>
+            </div>
+            
+            <div class="welcome-text">
+                <h2>Welcome to Smart Parenting Platform</h2>
+                <p>Join thousands of parents and experts who are revolutionizing child development with our intelligent tracking and guidance system.</p>
+            </div>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div>
+                        <h4>Health Tracking</h4>
+                        <p>Monitor your child's growth and development</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h4>Education Monitoring</h4>
+                        <p>Track academic progress and milestones</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div>
+                        <h4>Expert Guidance</h4>
+                        <p>Get personalized advice from child experts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-side">
+            <div class="login-header">
+                <h2>Login to Your Account</h2>
+                <p>Enter your credentials to access your dashboard</p>
+            </div>
+            
+            <div class="alert" id="alertMessage"></div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label>Select Role</label>
+                    <div class="role-selection">
+                        <div class="role-btn active" data-role="parent">
+                            <i class="fas fa-user-friends"></i>
+                            <div>Parent</div>
+                        </div>
+                        <div class="role-btn" data-role="expert">
+                            <i class="fas fa-user-md"></i>
+                            <div>Expert</div>
+                        </div>
+                        <div class="role-btn" data-role="admin">
+                            <i class="fas fa-user-shield"></i>
+                            <div>Admin</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                
+                <div class="remember-forgot">
+                    <div class="remember">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="login-btn">Sign In</button>
+                
+                <div class="divider">
+                    <span>New to Smart Parenting?</span>
+                </div>
+                
+                <div class="register-link">
+                    Don't have an account? <a href="register.html">Sign up now</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class LoginSystem {
+            constructor() {
+                this.selectedRole = 'parent';
+                this.initialize();
+            }
+            
+            initialize() {
+                this.setupEventListeners();
+                this.initializeDefaultUsers();
+            }
+            
+            setupEventListeners() {
+                // Role selection
+                document.querySelectorAll('.role-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.selectedRole = btn.dataset.role;
+                    });
+                });
+                
+                // Form submission
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.login();
+                });
+            }
+            
+            initializeDefaultUsers() {
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // Check if default admin exists
+                const adminExists = users.some(u => u.role === 'admin');
+                
+                if (!adminExists) {
+                    const defaultAdmin = {
+                        id: 'admin_1',
+                        name: 'System Admin',
+                        email: 'admin@smartparenting.com',
+                        password: 'admin123',
+                        role: 'admin',
+                        phone: '+1234567890',
+                        status: 'active',
+                        emailVerified: true,
+                        createdAt: new Date().toISOString(),
+                        isDefaultAdmin: true
+                    };
+                    
+                    users.push(defaultAdmin);
+                    
+                    // Add default expert for demo
+                    const defaultExpert = {
+                        id: 'expert_1',
+                        name: 'Dr. Sarah Johnson',
+                        email: 'expert@smartparenting.com',
+                        password: 'expert123',
+                        role: 'expert',
+                        phone: '+1234567891',
+                        status: 'verified',
+                        emailVerified: true,
+                        specialization: 'Child Psychology',
+                        experience: '10 years',
+                        degree: 'PhD in Child Development',
+                        medicalLicense: 'MD-12345',
+                        createdAt: new Date().toISOString(),
+                        verifiedAt: new Date().toISOString(),
+                        verifiedBy: 'System'
+                    };
+                    
+                    users.push(defaultExpert);
+                    
+                    // Add default parent for demo
+                    const defaultParent = {
+                        id: 'parent_1',
+                        name: 'John Doe',
+                        email: 'parent@smartparenting.com',
+                        password: 'parent123',
+                        role: 'parent',
+                        phone: '+1234567892',
+                        status: 'active',
+                        emailVerified: true,
+                        address: '123 Main St, City',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    users.push(defaultParent);
+                    
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Initialize default children
+                    const defaultChild = {
+                        id: 'child_1',
+                        name: 'Emma Doe',
+                        parentId: 'parent_1',
+                        dob: '2018-05-15',
+                        gender: 'female',
+                        weight: '18',
+                        height: '95',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    let children = JSON.parse(localStorage.getItem('children') || '[]');
+                    children.push(defaultChild);
+                    localStorage.setItem('children', JSON.stringify(children));
+                    
+                    // Initialize expert assignments
+                    const assignment = {
+                        id: 'assign_1',
+                        expertId: 'expert_1',
+                        parentId: 'parent_1',
+                        status: 'active',
+                        assignedAt: new Date().toISOString(),
+                        assignedBy: 'System'
+                    };
+                    
+                    let assignments = JSON.parse(localStorage.getItem('assignments') || '[]');
+                    assignments.push(assignment);
+                    localStorage.setItem('assignments', JSON.stringify(assignments));
+                    
+                    console.log('Default users initialized');
+                }
+            }
+            
+            login() {
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                
+                // Simple validation
+                if (!email || !password) {
+                    this.showAlert('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Get users from localStorage
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // Find user with matching email and role
+                const userFound = users.find(user => 
+                    user.email === email && 
+                    user.role === this.selectedRole &&
+                    user.password === password
+                );
+                
+                if (userFound) {
+                    // Check if user is blocked
+                    if (userFound.status === 'blocked') {
+                        this.showAlert('Your account has been blocked. Please contact admin.', 'error');
+                        return;
+                    }
+                    
+                    // Check if expert needs verification
+                    if (userFound.role === 'expert' && userFound.status !== 'verified') {
+                        this.showAlert('Your account is pending verification. Please wait for admin approval.', 'error');
+                        return;
+                    }
+                    
+                    // Store user info
+                    localStorage.setItem('token', 'logged_in');
+                    localStorage.setItem('user', JSON.stringify(userFound));
+                    
+                    // Update last login
+                    userFound.lastLogin = new Date().toISOString();
+                    let updatedUsers = users.map(u => u.id === userFound.id ? userFound : u);
+                    localStorage.setItem('users', JSON.stringify(updatedUsers));
+                    
+                    // Log activity
+                    this.logActivity({
+                        userId: userFound.id,
+                        userName: userFound.name,
+                        action: 'User logged in',
+                        type: 'auth',
+                        details: `User ${userFound.name} logged in`
+                    });
+                    
+                    this.showAlert('Login successful! Redirecting...', 'success');
+                    
+                    // Redirect based on role
+                    setTimeout(() => {
+                        switch(userFound.role) {
+                            case 'admin':
+                                window.location.href = 'admin-dashboard.html';
+                                break;
+                            case 'expert':
+                                window.location.href = 'expert-dashboard.html';
+                                break;
+                            case 'parent':
+                                window.location.href = 'parent-dashboard.html';
+                                break;
+                            default:
+                                window.location.href = 'dashboard.html';
+                        }
+                    }, 1000);
+                    
+                } else {
+                    this.showAlert('Invalid email, password, or role selected', 'error');
+                }
+            }
+            
+            showAlert(message, type) {
+                const alert = document.getElementById('alertMessage');
+                alert.textContent = message;
+                alert.className = `alert alert-${type}`;
+                alert.style.display = 'block';
+                
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 5000);
+            }
+            
+            logActivity(activity) {
+                const log = {
+                    ...activity,
+                    timestamp: new Date().toISOString(),
+                    id: 'log_' + Date.now()
+                };
+                
+                let logs = JSON.parse(localStorage.getItem('activities_log') || '[]');
+                logs.push(log);
+                localStorage.setItem('activities_log', JSON.stringify(logs));
+            }
+        }
+        
+        // Initialize login system
+        document.addEventListener('DOMContentLoaded', () => {
+            window.loginSystem = new LoginSystem();
+        });
+    </script>
+</body>
+</html>

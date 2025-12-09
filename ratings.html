@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ratings & Reviews - Smart Parenting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: var(--dark);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: var(--dark);
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #f8f9fa;
+            border-color: var(--primary);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Ratings Overview */
+        .ratings-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .overview-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .average-rating {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            color: #ffd166;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .rating-count {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .rating-bars {
+            text-align: left;
+        }
+
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-bar span {
+            width: 60px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .bar {
+            flex: 1;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--primary);
+        }
+
+        /* Rating Categories */
+        .rating-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .category-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .category-card h4 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .category-card .score {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-review-btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-review-btn:hover {
+            background: var(--secondary);
+        }
+
+        /* Review Card */
+        .review-card {
+            padding: 25px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .reviewer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .reviewer-info h4 {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .reviewer-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .review-stars {
+            color: #ffd166;
+            font-size: 18px;
+        }
+
+        .review-content {
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .review-date {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            color: var(--primary);
+        }
+
+        /* Expert List (for parent view) */
+        .experts-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .experts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .expert-card {
+            padding: 25px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .expert-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .expert-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .expert-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--warning);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .expert-info h4 {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .expert-specialty {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .expert-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .expert-rating .stars {
+            font-size: 18px;
+        }
+
+        .expert-rating .count {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .rate-expert-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .rate-expert-btn:hover {
+            background: var(--secondary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 20px 0;
+        }
+
+        .star-rating .star {
+            font-size: 32px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star-rating .star.selected {
+            color: #ffd166;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .page-header {
+                padding: 20px;
+            }
+            
+            .ratings-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .experts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .review-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .review-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-child"></i>
+            <h1>Smart Parenting</h1>
+        </div>
+        
+        <div class="header-actions">
+            <a href="#" class="back-button" id="backButton">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div>
+                    <h4 id="userName">User</h4>
+                    <p id="userRole">Role</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>Ratings & Reviews</h2>
+            <p>Rate your experience and provide feedback to help us improve</p>
+        </div>
+
+        <!-- Ratings Overview -->
+        <div class="ratings-overview">
+            <div class="overview-card">
+                <div class="average-rating" id="averageRating">4.8</div>
+                <div class="stars" id="overviewStars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div class="rating-count" id="totalReviews">Based on 24 reviews</div>
+            </div>
+            
+            <div class="overview-card">
+                <h3 style="margin-bottom: 20px; color: var(--dark);">Rating Distribution</h3>
+                <div class="rating-bars" id="ratingBars">
+                    <!-- Rating bars will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="overview-card">
+                <h3 style="margin-bottom: 20px; color: var(--dark);">Rating Categories</h3>
+                <div class="rating-categories" id="ratingCategories">
+                    <!-- Categories will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Content based on user role -->
+        <div id="parentView" style="display: none;">
+            <!-- Experts to Rate -->
+            <div class="experts-section">
+                <div class="section-title">
+                    <h3>Rate Your Assigned Experts</h3>
+                </div>
+                
+                <div class="experts-grid" id="expertsGrid">
+                    <!-- Experts will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="expertView" style="display: none;">
+            <!-- Expert's Reviews -->
+            <div class="reviews-section">
+                <div class="section-title">
+                    <h3>Reviews About You</h3>
+                    <button class="add-review-btn" style="display: none;">Add Review</button>
+                </div>
+                
+                <div id="expertReviews">
+                    <!-- Reviews will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="adminView" style="display: none;">
+            <!-- All Reviews -->
+            <div class="reviews-section">
+                <div class="section-title">
+                    <h3>All Reviews</h3>
+                    <div class="filter-group">
+                        <select id="reviewFilter">
+                            <option value="all">All Reviews</option>
+                            <option value="expert">Expert Reviews</option>
+                            <option value="system">System Reviews</option>
+                            <option value="parent">Parent Reviews</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="allReviews">
+                    <!-- All reviews will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Section (for system reviews) -->
+        <div class="reviews-section" id="systemReviewsSection">
+            <div class="section-title">
+                <h3>System Reviews</h3>
+                <button class="add-review-btn" id="addSystemReviewBtn">Add Review</button>
+            </div>
+            
+            <div id="systemReviews">
+                <!-- System reviews will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Rate Expert Modal -->
+    <div class="modal" id="rateExpertModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeRateModal">&times;</button>
+            <h2>Rate Expert</h2>
+            <form id="rateExpertForm">
+                <input type="hidden" id="rateExpertId">
+                
+                <div class="form-group">
+                    <label>Overall Rating</label>
+                    <div class="star-rating" id="overallStars">
+                        <span class="star" data-rating="1"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="2"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="3"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="4"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="5"><i class="far fa-star"></i></span>
+                    </div>
+                    <input type="hidden" id="overallRating" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label>Communication</label>
+                    <div class="star-rating" id="communicationStars">
+                        <span class="star" data-rating="1"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="2"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="3"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="4"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="5"><i class="far fa-star"></i></span>
+                    </div>
+                    <input type="hidden" id="communicationRating" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label>Expertise</label>
+                    <div class="star-rating" id="expertiseStars">
+                        <span class="star" data-rating="1"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="2"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="3"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="4"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="5"><i class="far fa-star"></i></span>
+                    </div>
+                    <input type="hidden" id="expertiseRating" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label>Helpfulness</label>
+                    <div class="star-rating" id="helpfulnessStars">
+                        <span class="star" data-rating="1"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="2"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="3"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="4"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="5"><i class="far fa-star"></i></span>
+                    </div>
+                    <input type="hidden" id="helpfulnessRating" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label>Review Title</label>
+                    <input type="text" id="reviewTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Your Review</label>
+                    <textarea id="reviewText" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-block">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- System Review Modal -->
+    <div class="modal" id="systemReviewModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeSystemModal">&times;</button>
+            <h2>Review Smart Parenting System</h2>
+            <form id="systemReviewForm">
+                <div class="form-group">
+                    <label>Overall Rating</label>
+                    <div class="star-rating" id="systemOverallStars">
+                        <span class="star" data-rating="1"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="2"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="3"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="4"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="5"><i class="far fa-star"></i></span>
+                    </div>
+                    <input type="hidden" id="systemOverallRating" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label>Ease of Use</label>
+                    <div class="star-rating" id="easeOfUseStars">
+                        <span class="star" data-rating="1"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="2"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="3"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="4"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="5"><i class="far fa-star"></i></span>
+                    </div>
+                    <input type="hidden" id="easeOfUseRating" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label>Features</label>
+                    <div class="star-rating" id="featuresStars">
+                        <span class="star" data-rating="1"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="2"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="3"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="4"><i class="far fa-star"></i></span>
+                        <span class="star" data-rating="5"><i class="far fa-star"></i></span>
+                    </div>
+                    <input type="hidden" id="featuresRating" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label>Review Title</label>
+                    <input type="text" id="systemReviewTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Your Review</label>
+                    <textarea id="systemReviewText" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-block">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class RatingsSystem {
+            constructor() {
+                this.currentUser = null;
+                this.initialize();
+            }
+            
+            initialize() {
+                this.checkAuthentication();
+                this.loadUserData();
+                this.setupEventListeners();
+                this.loadRatings();
+                this.setupStarRatings();
+            }
+            
+            checkAuthentication() {
+                const token = localStorage.getItem('token');
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                this.currentUser = user;
+            }
+            
+            loadUserData() {
+                document.getElementById('userName').textContent = this.currentUser.name;
+                document.getElementById('userAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                document.getElementById('userRole').textContent = this.currentUser.role.charAt(0).toUpperCase() + this.currentUser.role.slice(1);
+                
+                // Show appropriate view based on role
+                document.getElementById('parentView').style.display = 'none';
+                document.getElementById('expertView').style.display = 'none';
+                document.getElementById('adminView').style.display = 'none';
+                document.getElementById('systemReviewsSection').style.display = 'block';
+                
+                if (this.currentUser.role === 'parent') {
+                    document.getElementById('parentView').style.display = 'block';
+                    this.loadAssignedExperts();
+                } else if (this.currentUser.role === 'expert') {
+                    document.getElementById('expertView').style.display = 'block';
+                    document.getElementById('systemReviewsSection').style.display = 'none';
+                    this.loadExpertReviews();
+                } else if (this.currentUser.role === 'admin') {
+                    document.getElementById('adminView').style.display = 'block';
+                    this.loadAllReviews();
+                }
+            }
+            
+            setupEventListeners() {
+                // Back button
+                document.getElementById('backButton').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.redirectToDashboard();
+                });
+                
+                // Add review buttons
+                document.getElementById('addSystemReviewBtn').addEventListener('click', () => {
+                    this.showSystemReviewModal();
+                });
+                
+                // Modal close buttons
+                document.getElementById('closeRateModal').addEventListener('click', () => {
+                    document.getElementById('rateExpertModal').classList.remove('active');
+                });
+                
+                document.getElementById('closeSystemModal').addEventListener('click', () => {
+                    document.getElementById('systemReviewModal').classList.remove('active');
+                });
+                
+                // Form submissions
+                document.getElementById('rateExpertForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.submitExpertReview();
+                });
+                
+                document.getElementById('systemReviewForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.submitSystemReview();
+                });
+                
+                // Filter for admin
+                document.getElementById('reviewFilter').addEventListener('change', (e) => {
+                    this.loadAllReviews(e.target.value);
+                });
+                
+                // Close modals when clicking outside
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                        }
+                    });
+                });
+            }
+            
+            setupStarRatings() {
+                // Setup star rating interaction for all star rating elements
+                document.querySelectorAll('.star-rating .star').forEach(star => {
+                    star.addEventListener('click', (e) => {
+                        const rating = parseInt(star.dataset.rating);
+                        const stars = star.parentElement.querySelectorAll('.star');
+                        
+                        // Update stars
+                        stars.forEach((s, index) => {
+                            if (index < rating) {
+                                s.innerHTML = '<i class="fas fa-star"></i>';
+                                s.classList.add('selected');
+                            } else {
+                                s.innerHTML = '<i class="far fa-star"></i>';
+                                s.classList.remove('selected');
+                            }
+                        });
+                        
+                        // Update hidden input
+                        const inputId = star.parentElement.id.replace('Stars', 'Rating');
+                        document.getElementById(inputId).value = rating;
+                    });
+                    
+                    // Add hover effect
+                    star.addEventListener('mouseover', (e) => {
+                        const rating = parseInt(star.dataset.rating);
+                        const stars = star.parentElement.querySelectorAll('.star');
+                        
+                        stars.forEach((s, index) => {
+                            if (index < rating) {
+                                s.innerHTML = '<i class="fas fa-star"></i>';
+                            } else {
+                                s.innerHTML = '<i class="far fa-star"></i>';
+                            }
+                        });
+                    });
+                    
+                    // Reset on mouseout if not selected
+                    star.parentElement.addEventListener('mouseout', (e) => {
+                        const stars = star.parentElement.querySelectorAll('.star');
+                        const inputId = star.parentElement.id.replace('Stars', 'Rating');
+                        const currentRating = parseInt(document.getElementById(inputId).value) || 0;
+                        
+                        stars.forEach((s, index) => {
+                            if (index < currentRating) {
+                                s.innerHTML = '<i class="fas fa-star"></i>';
+                            } else {
+                                s.innerHTML = '<i class="far fa-star"></i>';
+                            }
+                        });
+                    });
+                });
+            }
+            
+            loadRatings() {
+                const ratings = JSON.parse(localStorage.getItem('ratings') || '[]');
+                const systemRatings = ratings.filter(r => r.type === 'system');
+                const expertRatings = ratings.filter(r => r.type === 'expert');
+                
+                // Calculate average for system ratings
+                if (systemRatings.length > 0) {
+                    const avgRating = systemRatings.reduce((sum, r) => sum + r.overall, 0) / systemRatings.length;
+                    document.getElementById('averageRating').textContent = avgRating.toFixed(1);
+                    
+                    // Update stars
+                    const stars = document.getElementById('overviewStars');
+                    stars.innerHTML = '';
+                    for (let i = 1; i <= 5; i++) {
+                        if (avgRating >= i) {
+                            stars.innerHTML += '<i class="fas fa-star"></i>';
+                        } else if (avgRating >= i - 0.5) {
+                            stars.innerHTML += '<i class="fas fa-star-half-alt"></i>';
+                        } else {
+                            stars.innerHTML += '<i class="far fa-star"></i>';
+                        }
+                    }
+                    
+                    document.getElementById('totalReviews').textContent = `Based on ${systemRatings.length} reviews`;
+                    
+                    // Update rating bars
+                    this.updateRatingBars(systemRatings);
+                    
+                    // Update categories
+                    this.updateRatingCategories(systemRatings);
+                }
+                
+                // Load system reviews
+                this.loadSystemReviews();
+            }
+            
+            updateRatingBars(ratings) {
+                const bars = document.getElementById('ratingBars');
+                const distribution = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0};
+                
+                ratings.forEach(rating => {
+                    const rounded = Math.round(rating.overall);
+                    if (rounded >= 1 && rounded <= 5) {
+                        distribution[rounded]++;
+                    }
+                });
+                
+                bars.innerHTML = '';
+                for (let i = 5; i >= 1; i--) {
+                    const count = distribution[i] || 0;
+                    const percentage = ratings.length > 0 ? (count / ratings.length) * 100 : 0;
+                    
+                    bars.innerHTML += `
+                        <div class="rating-bar">
+                            <span>${i} star${i !== 1 ? 's' : ''}</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="width: ${percentage}%"></div>
+                            </div>
+                            <span>${count}</span>
+                        </div>
+                    `;
+                }
+            }
+            
+            updateRatingCategories(ratings) {
+                const categories = document.getElementById('ratingCategories');
+                const categoriesData = {
+                    'Communication': 0,
+                    'Ease of Use': 0,
+                    'Features': 0,
+                    'Support': 0,
+                    'Value': 0
+                };
+                
+                // Calculate average for each category
+                ratings.forEach(rating => {
+                    if (rating.communication) categoriesData['Communication'] += rating.communication;
+                    if (rating.easeOfUse) categoriesData['Ease of Use'] += rating.easeOfUse;
+                    if (rating.features) categoriesData['Features'] += rating.features;
+                    if (rating.support) categoriesData['Support'] += rating.support;
+                    if (rating.value) categoriesData['Value'] += rating.value;
+                });
+                
+                const count = ratings.length;
+                categories.innerHTML = '';
+                
+                for (const [category, total] of Object.entries(categoriesData)) {
+                    if (total > 0) {
+                        const average = total / count;
+                        categories.innerHTML += `
+                            <div class="category-card">
+                                <h4>${category}</h4>
+                                <div class="score">${average.toFixed(1)}</div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            loadAssignedExperts() {
+                const assignments = JSON.parse(localStorage.getItem('assignments') || '[]');
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const ratings = JSON.parse(localStorage.getItem('ratings') || '[]');
+                
+                // Get experts assigned to this parent
+                const assignedExpertIds = assignments
+                    .filter(a => a.parentId === this.currentUser.id)
+                    .map(a => a.expertId);
+                
+                const assignedExperts = users.filter(u => assignedExpertIds.includes(u.id));
+                
+                const grid = document.getElementById('expertsGrid');
+                
+                if (assignedExperts.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: #f8f9fa; border-radius: 12px;">
+                            <i class="fas fa-user-md" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
+                            <h3 style="color: var(--gray); margin-bottom: 10px;">No Assigned Experts</h3>
+                            <p style="color: var(--gray); margin-bottom: 20px;">You will be assigned experts by the admin</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                grid.innerHTML = assignedExperts.map(expert => {
+                    // Calculate average rating for this expert
+                    const expertRatings = ratings.filter(r => r.expertId === expert.id && r.type === 'expert');
+                    const avgRating = expertRatings.length > 0 ? 
+                        expertRatings.reduce((sum, r) => sum + r.overall, 0) / expertRatings.length : 0;
+                    
+                    // Check if parent has already rated this expert
+                    const hasRated = expertRatings.some(r => r.parentId === this.currentUser.id);
+                    
+                    return `
+                        <div class="expert-card">
+                            <div class="expert-header">
+                                <div class="expert-avatar">${expert.name.charAt(0)}</div>
+                                <div class="expert-info">
+                                    <h4>${expert.name}</h4>
+                                    <p class="expert-specialty">${expert.expertInfo?.specialty || 'Child Development Expert'}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="expert-rating">
+                                <div class="stars">
+                                    ${this.getStarRating(avgRating)}
+                                </div>
+                                <div class="count">${expertRatings.length} reviews</div>
+                            </div>
+                            
+                            ${hasRated ? 
+                                `<p style="color: var(--success); font-size: 14px; margin: 10px 0;">
+                                    <i class="fas fa-check-circle"></i> You have rated this expert
+                                </p>` : 
+                                `<button class="rate-expert-btn" onclick="window.ratingsSystem.rateExpert('${expert.id}')">
+                                    Rate This Expert
+                                </button>`
+                            }
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            getStarRating(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (rating >= i) {
+                        stars += '<i class="fas fa-star"></i>';
+                    } else if (rating >= i - 0.5) {
+                        stars += '<i class="fas fa-star-half-alt"></i>';
+                    } else {
+                        stars += '<i class="far fa-star"></i>';
+                    }
+                }
+                return stars;
+            }
+            
+            loadExpertReviews() {
+                const ratings = JSON.parse(localStorage.getItem('ratings') || '[]');
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                const expertReviews = ratings.filter(r => 
+                    r.type === 'expert' && r.expertId === this.currentUser.id
+                ).sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                const container = document.getElementById('expertReviews');
+                
+                if (expertReviews.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--gray);">
+                            <i class="fas fa-star" style="font-size: 48px; margin-bottom: 20px; display: block; color: #ddd;"></i>
+                            <h3 style="margin-bottom: 10px;">No Reviews Yet</h3>
+                            <p>You haven't received any ratings yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = expertReviews.map(review => {
+                    const parent = users.find(u => u.id === review.parentId);
+                    
+                    return `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer">
+                                    <div class="reviewer-avatar">${parent?.name.charAt(0) || 'P'}</div>
+                                    <div class="reviewer-info">
+                                        <h4>${parent?.name || 'Parent'}</h4>
+                                        <p>Parent</p>
+                                    </div>
+                                </div>
+                                <div class="review-stars">
+                                    ${this.getStarRating(review.overall)}
+                                </div>
+                            </div>
+                            
+                            <div class="review-content">
+                                <h4 style="margin-bottom: 10px;">${review.title}</h4>
+                                <p>${review.text}</p>
+                            </div>
+                            
+                            <div class="review-footer">
+                                <div class="review-date">
+                                    ${new Date(review.date).toLocaleDateString()}
+                                </div>
+                                <div class="review-actions">
+                                    <button class="action-btn">
+                                        <i class="fas fa-thumbs-up"></i> Helpful
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            loadAllReviews(filter = 'all') {
+                const ratings = JSON.parse(localStorage.getItem('ratings') || '[]');
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                let filteredRatings = ratings;
+                if (filter === 'expert') {
+                    filteredRatings = ratings.filter(r => r.type === 'expert');
+                } else if (filter === 'system') {
+                    filteredRatings = ratings.filter(r => r.type === 'system');
+                } else if (filter === 'parent') {
+                    filteredRatings = ratings.filter(r => r.parentId);
+                }
+                
+                const container = document.getElementById('allReviews');
+                
+                if (filteredRatings.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--gray);">
+                            <i class="fas fa-star" style="font-size: 48px; margin-bottom: 20px; display: block; color: #ddd;"></i>
+                            <h3 style="margin-bottom: 10px;">No Reviews Found</h3>
+                            <p>No reviews match your filter.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = filteredRatings.map(review => {
+                    const reviewer = users.find(u => u.id === review.userId || u.id === review.parentId);
+                    
+                    return `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer">
+                                    <div class="reviewer-avatar">${reviewer?.name.charAt(0) || 'U'}</div>
+                                    <div class="reviewer-info">
+                                        <h4>${reviewer?.name || 'User'}</h4>
+                                        <p>${review.type === 'expert' ? 'Expert Review' : 'System Review'}</p>
+                                    </div>
+                                </div>
+                                <div class="review-stars">
+                                    ${this.getStarRating(review.overall)}
+                                </div>
+                            </div>
+                            
+                            <div class="review-content">
+                                <h4 style="margin-bottom: 10px;">${review.title}</h4>
+                                <p>${review.text}</p>
+                            </div>
+                            
+                            <div class="review-footer">
+                                <div class="review-date">
+                                    ${new Date(review.date).toLocaleDateString()}
+                                </div>
+                                <div class="review-actions">
+                                    <button class="action-btn">
+                                        <i class="fas fa-thumbs-up"></i> Helpful
+                                    </button>
+                                    ${review.type === 'expert' ? 
+                                        `<button class="action-btn" onclick="window.ratingsSystem.viewExpertDetails('${review.expertId}')">
+                                            <i class="fas fa-eye"></i> View Expert
+                                        </button>` : ''
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            loadSystemReviews() {
+                const ratings = JSON.parse(localStorage.getItem('ratings') || '[]');
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                const systemReviews = ratings.filter(r => r.type === 'system')
+                    .sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                const container = document.getElementById('systemReviews');
+                
+                if (systemReviews.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--gray);">
+                            <i class="fas fa-star" style="font-size: 48px; margin-bottom: 20px; display: block; color: #ddd;"></i>
+                            <h3 style="margin-bottom: 10px;">No System Reviews Yet</h3>
+                            <p>Be the first to review our system!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = systemReviews.map(review => {
+                    const reviewer = users.find(u => u.id === review.userId);
+                    
+                    return `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer">
+                                    <div class="reviewer-avatar">${reviewer?.name.charAt(0) || 'U'}</div>
+                                    <div class="reviewer-info">
+                                        <h4>${reviewer?.name || 'User'}</h4>
+                                        <p>${reviewer?.role ? reviewer.role.charAt(0).toUpperCase() + reviewer.role.slice(1) : 'User'}</p>
+                                    </div>
+                                </div>
+                                <div class="review-stars">
+                                    ${this.getStarRating(review.overall)}
+                                </div>
+                            </div>
+                            
+                            <div class="review-content">
+                                <h4 style="margin-bottom: 10px;">${review.title}</h4>
+                                <p>${review.text}</p>
+                            </div>
+                            
+                            <div class="review-footer">
+                                <div class="review-date">
+                                    ${new Date(review.date).toLocaleDateString()}
+                                </div>
+                                <div class="review-actions">
+                                    <button class="action-btn">
+                                        <i class="fas fa-thumbs-up"></i> Helpful
+                                    </button>
+                                    <button class="action-btn">
+                                        <i class="fas fa-flag"></i> Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            rateExpert(expertId) {
+                document.getElementById('rateExpertModal').classList.add('active');
+                document.getElementById('rateExpertId').value = expertId;
+                
+                // Reset form
+                document.getElementById('rateExpertForm').reset();
+                document.getElementById('overallRating').value = 0;
+                document.getElementById('communicationRating').value = 0;
+                document.getElementById('expertiseRating').value = 0;
+                document.getElementById('helpfulnessRating').value = 0;
+                
+                // Reset stars
+                document.querySelectorAll('#rateExpertForm .star').forEach(star => {
+                    star.innerHTML = '<i class="far fa-star"></i>';
+                    star.classList.remove('selected');
+                });
+            }
+            
+            showSystemReviewModal() {
+                document.getElementById('systemReviewModal').classList.add('active');
+                
+                // Reset form
+                document.getElementById('systemReviewForm').reset();
+                document.getElementById('systemOverallRating').value = 0;
+                document.getElementById('easeOfUseRating').value = 0;
+                document.getElementById('featuresRating').value = 0;
+                
+                // Reset stars
+                document.querySelectorAll('#systemReviewForm .star').forEach(star => {
+                    star.innerHTML = '<i class="far fa-star"></i>';
+                    star.classList.remove('selected');
+                });
+            }
+            
+            submitExpertReview() {
+                const review = {
+                    id: 'rating_' + Date.now(),
+                    type: 'expert',
+                    expertId: document.getElementById('rateExpertId').value,
+                    parentId: this.currentUser.id,
+                    overall: parseInt(document.getElementById('overallRating').value),
+                    communication: parseInt(document.getElementById('communicationRating').value),
+                    expertise: parseInt(document.getElementById('expertiseRating').value),
+                    helpfulness: parseInt(document.getElementById('helpfulnessRating').value),
+                    title: document.getElementById('reviewTitle').value,
+                    text: document.getElementById('reviewText').value,
+                    date: new Date().toISOString()
+                };
+                
+                if (review.overall === 0) {
+                    alert('Please provide an overall rating');
+                    return;
+                }
+                
+                let ratings = JSON.parse(localStorage.getItem('ratings') || '[]');
+                ratings.push(review);
+                localStorage.setItem('ratings', JSON.stringify(ratings));
+                
+                alert('Thank you for your review!');
+                document.getElementById('rateExpertModal').classList.remove('active');
+                document.getElementById('rateExpertForm').reset();
+                
+                // Refresh data
+                this.loadAssignedExperts();
+                this.loadRatings();
+            }
+            
+            submitSystemReview() {
+                const review = {
+                    id: 'rating_' + Date.now(),
+                    type: 'system',
+                    userId: this.currentUser.id,
+                    overall: parseInt(document.getElementById('systemOverallRating').value),
+                    easeOfUse: parseInt(document.getElementById('easeOfUseRating').value),
+                    features: parseInt(document.getElementById('featuresRating').value),
+                    title: document.getElementById('systemReviewTitle').value,
+                    text: document.getElementById('systemReviewText').value,
+                    date: new Date().toISOString()
+                };
+                
+                if (review.overall === 0) {
+                    alert('Please provide an overall rating');
+                    return;
+                }
+                
+                let ratings = JSON.parse(localStorage.getItem('ratings') || '[]');
+                ratings.push(review);
+                localStorage.setItem('ratings', JSON.stringify(ratings));
+                
+                alert('Thank you for your review!');
+                document.getElementById('systemReviewModal').classList.remove('active');
+                document.getElementById('systemReviewForm').reset();
+                
+                // Refresh data
+                this.loadRatings();
+                this.loadSystemReviews();
+            }
+            
+            viewExpertDetails(expertId) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const expert = users.find(u => u.id === expertId);
+                
+                if (expert) {
+                    alert(`Expert Details:\n\nName: ${expert.name}\nEmail: ${expert.email}\nSpecialty: ${expert.expertInfo?.specialty || 'N/A'}\nExperience: ${expert.expertInfo?.experience_years || '0'} years`);
+                }
+            }
+            
+            redirectToDashboard() {
+                const user = this.currentUser;
+                if (user.role === 'parent') {
+                    window.location.href = 'parent-dashboard.html';
+                } else if (user.role === 'expert') {
+                    window.location.href = 'expert-dashboard.html';
+                } else if (user.role === 'admin') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+        
+        // Initialize ratings system
+        document.addEventListener('DOMContentLoaded', () => {
+            window.ratingsSystem = new RatingsSystem();
+        });
+    </script>
+</body>
+</html>

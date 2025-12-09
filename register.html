@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Smart Parenting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fb 0%, #e3e6ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            font-size: 36px;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .input-with-icon input,
+        .input-with-icon select,
+        .input-with-icon textarea {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-with-icon input:focus,
+        .input-with-icon select:focus,
+        .input-with-icon textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .role-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .role-option {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-option:hover {
+            border-color: var(--primary);
+        }
+
+        .role-option.active {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .role-option i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--primary);
+            display: block;
+        }
+
+        .expert-details {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .expert-details.active {
+            display: block;
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .terms input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .terms label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-child"></i>
+                <h1>Smart Parenting</h1>
+            </div>
+            <p>Create your account and join our parenting community</p>
+        </div>
+        
+        <div class="content">
+            <div class="alert" id="alertMessage"></div>
+            
+            <form id="registerForm">
+                <div class="form-section">
+                    <h3>Account Type</h3>
+                    <div class="role-selection">
+                        <div class="role-option active" data-role="parent">
+                            <i class="fas fa-user-friends"></i>
+                            <div>Parent</div>
+                        </div>
+                        <div class="role-option" data-role="expert">
+                            <i class="fas fa-user-md"></i>
+                            <div>Expert</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-container">
+                    <div>
+                        <div class="form-section">
+                            <h3>Personal Information</h3>
+                            
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="fullName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-envelope"></i>
+                                    <input type="email" id="email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-phone"></i>
+                                    <input type="tel" id="phone" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Address</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-home"></i>
+                                    <textarea id="address" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-section">
+                            <h3>Account Security</h3>
+                            
+                            <div class="form-group">
+                                <label>Password</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="password" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="confirmPassword" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="expert-details" id="expertDetails">
+                            <h3>Expert Information</h3>
+                            
+                            <div class="form-group">
+                                <label>Specialization</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-stethoscope"></i>
+                                    <input type="text" id="specialization">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Experience (Years)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                    <input type="number" id="experience">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Qualifications</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <textarea id="qualifications" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="terms">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+                
+                <button type="submit" class="btn">Create Account</button>
+                
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Sign in here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class RegistrationSystem {
+            constructor() {
+                this.selectedRole = 'parent';
+                this.initialize();
+            }
+            
+            initialize() {
+                this.setupEventListeners();
+            }
+            
+            setupEventListeners() {
+                // Role selection
+                document.querySelectorAll('.role-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        document.querySelectorAll('.role-option').forEach(o => o.classList.remove('active'));
+                        option.classList.add('active');
+                        this.selectedRole = option.dataset.role;
+                        
+                        // Show/hide expert details
+                        const expertDetails = document.getElementById('expertDetails');
+                        if (this.selectedRole === 'expert') {
+                            expertDetails.classList.add('active');
+                        } else {
+                            expertDetails.classList.remove('active');
+                        }
+                    });
+                });
+                
+                // Form submission
+                document.getElementById('registerForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.register();
+                });
+            }
+            
+            register() {
+                // Get form values
+                const name = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const address = document.getElementById('address').value.trim();
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Validation
+                if (!name || !email || !phone || !password || !confirmPassword) {
+                    this.showAlert('Please fill in all required fields', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    this.showAlert('Passwords do not match', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    this.showAlert('Password must be at least 6 characters long', 'error');
+                    return;
+                }
+                
+                // Check if email already exists
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const emailExists = users.some(user => user.email === email);
+                
+                if (emailExists) {
+                    this.showAlert('Email already registered. Please use a different email or login.', 'error');
+                    return;
+                }
+                
+                // Create user object
+                const user = {
+                    id: `${this.selectedRole}_${Date.now()}`,
+                    name: name,
+                    email: email,
+                    password: password,
+                    phone: phone,
+                    address: address || '',
+                    role: this.selectedRole,
+                    status: this.selectedRole === 'expert' ? 'pending' : 'active',
+                    emailVerified: false,
+                    createdAt: new Date().toISOString(),
+                    lastLogin: null
+                };
+                
+                // Add expert-specific fields
+                if (this.selectedRole === 'expert') {
+                    user.specialization = document.getElementById('specialization').value.trim() || 'General';
+                    user.experience = document.getElementById('experience').value || '0';
+                    user.qualifications = document.getElementById('qualifications').value.trim() || 'Not specified';
+                    user.medicalLicense = '';
+                }
+                
+                // Save user
+                users.push(user);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Log activity
+                this.logActivity({
+                    action: 'New user registration',
+                    type: 'auth',
+                    details: `${name} registered as ${this.selectedRole}`
+                });
+                
+                this.showAlert('Registration successful! You can now login.', 'success');
+                
+                // Clear form
+                document.getElementById('registerForm').reset();
+                
+                // Redirect to login after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }
+            
+            showAlert(message, type) {
+                const alert = document.getElementById('alertMessage');
+                alert.textContent = message;
+                alert.className = `alert alert-${type}`;
+                alert.style.display = 'block';
+                
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 5000);
+            }
+            
+            logActivity(activity) {
+                const log = {
+                    ...activity,
+                    timestamp: new Date().toISOString(),
+                    id: 'log_' + Date.now()
+                };
+                
+                let logs = JSON.parse(localStorage.getItem('activities_log') || '[]');
+                logs.push(log);
+                localStorage.setItem('activities_log', JSON.stringify(logs));
+            }
+        }
+        
+        // Initialize registration system
+        document.addEventListener('DOMContentLoaded', () => {
+            window.registrationSystem = new RegistrationSystem();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Smart Parenting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: var(--dark);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Profile Container */
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* Profile Sidebar */
+        .profile-sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 600;
+            margin: 0 auto 25px;
+        }
+
+        .profile-name {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .profile-role {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Profile Content */
+        .profile-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            margin-bottom: 20px;
+        }
+
+        .info-item label {
+            display: block;
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .info-item .value {
+            font-size: 16px;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        /* Children Section */
+        .children-section {
+            margin-top: 40px;
+        }
+
+        .children-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .child-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .child-card:hover {
+            transform: translateY(-5px);
+            background: #e9ecef;
+        }
+
+        .child-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .child-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .child-info h4 {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .child-age {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Expert Section */
+        .expert-section {
+            margin-top: 40px;
+        }
+
+        .expert-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .expert-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .expert-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4cc9f0 0%, #4895ef 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .expert-details {
+            flex: 1;
+        }
+
+        .expert-details h4 {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .expert-specialization {
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .expert-contact {
+            margin-top: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Edit Profile Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn-block {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        /* No Expert Assigned */
+        .no-expert {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        .no-expert i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        @media (max-width: 992px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .children-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-child"></i>
+            <h1>Smart Parenting</h1>
+        </div>
+        
+        <div class="header-actions">
+            <a href="parent-dashboard.html" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">P</div>
+                <div>
+                    <h4 id="userName">Parent Name</h4>
+                    <p id="userRole">Parent Profile</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+        <div class="profile-container">
+            <!-- Profile Sidebar -->
+            <div class="profile-sidebar">
+                <div class="profile-avatar-large" id="profileAvatar">P</div>
+                <h2 class="profile-name" id="profileName">Parent Name</h2>
+                <div class="profile-role" id="profileRole">Parent Account</div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="childrenCount">0</div>
+                        <div class="stat-label">Children</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="expertCount">0</div>
+                        <div class="stat-label">Experts</div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-block" id="editProfileBtn">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+                <button class="btn btn-block btn-secondary" id="changePasswordBtn" style="margin-top: 10px;">
+                    <i class="fas fa-key"></i> Change Password
+                </button>
+            </div>
+            
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <!-- Personal Information -->
+                <div class="section-title">
+                    <h3>Personal Information</h3>
+                </div>
+                
+                <div class="info-grid" id="personalInfo">
+                    <!-- Info will be loaded here -->
+                </div>
+                
+                <!-- My Children -->
+                <div class="section-title children-section">
+                    <h3>My Children</h3>
+                    <button class="btn" id="addChildBtn" style="float: right; padding: 8px 15px; font-size: 14px;">
+                        <i class="fas fa-plus"></i> Add Child
+                    </button>
+                </div>
+                
+                <div class="children-grid" id="childrenGrid">
+                    <!-- Children will be loaded here -->
+                </div>
+                
+                <!-- Assigned Expert -->
+                <div class="section-title expert-section">
+                    <h3>Assigned Expert</h3>
+                </div>
+                
+                <div id="expertInfo">
+                    <!-- Expert info will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeEditModal">&times;</button>
+            <h2>Edit Profile</h2>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="editName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="editEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="editPhone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="editAddress" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-block">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closePasswordModal">&times;</button>
+            <h2>Change Password</h2>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label>Current Password</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                
+                <button type="submit" class="btn btn-block">Change Password</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class ParentProfile {
+            constructor() {
+                this.currentUser = null;
+                this.children = [];
+                this.expert = null;
+                this.initialize();
+            }
+            
+            initialize() {
+                this.checkAuthentication();
+                this.loadUserData();
+                this.loadChildren();
+                this.loadExpert();
+                this.setupEventListeners();
+                this.updateStats();
+            }
+            
+            checkAuthentication() {
+                const token = localStorage.getItem('token');
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (!token || user.role !== 'parent') {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                this.currentUser = user;
+            }
+            
+            loadUserData() {
+                document.getElementById('userName').textContent = this.currentUser.name;
+                document.getElementById('userAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                document.getElementById('profileName').textContent = this.currentUser.name;
+                document.getElementById('profileAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                
+                // Load personal info
+                const personalInfo = document.getElementById('personalInfo');
+                personalInfo.innerHTML = `
+                    <div class="info-item">
+                        <label>Email Address</label>
+                        <div class="value">${this.currentUser.email}</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Phone Number</label>
+                        <div class="value">${this.currentUser.phone || 'Not provided'}</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Address</label>
+                        <div class="value">${this.currentUser.address || 'Not provided'}</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Account Created</label>
+                        <div class="value">${new Date(this.currentUser.createdAt).toLocaleDateString()}</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Last Login</label>
+                        <div class="value">${this.currentUser.lastLogin ? new Date(this.currentUser.lastLogin).toLocaleString() : 'Never'}</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Account Status</label>
+                        <div class="value" style="color: ${this.currentUser.status === 'active' ? 'green' : 'red'};">
+                            ${this.currentUser.status || 'active'}
+                        </div>
+                    </div>
+                `;
+                
+                // Set form values
+                document.getElementById('editName').value = this.currentUser.name;
+                document.getElementById('editEmail').value = this.currentUser.email;
+                document.getElementById('editPhone').value = this.currentUser.phone || '';
+                document.getElementById('editAddress').value = this.currentUser.address || '';
+            }
+            
+            loadChildren() {
+                this.children = JSON.parse(localStorage.getItem('children') || '[]')
+                    .filter(child => child.parentId === this.currentUser.id);
+                
+                const childrenGrid = document.getElementById('childrenGrid');
+                
+                if (this.children.length === 0) {
+                    childrenGrid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--gray);">
+                            <i class="fas fa-child" style="font-size: 48px; margin-bottom: 20px; display: block;"></i>
+                            <h4 style="margin-bottom: 10px;">No Children Added</h4>
+                            <p>Add your children to start tracking their development</p>
+                        </div>
+                    `;
+                } else {
+                    childrenGrid.innerHTML = this.children.map(child => {
+                        const age = this.calculateAge(child.dob);
+                        return `
+                            <div class="child-card" onclick="window.parentProfile.viewChild('${child.id}')">
+                                <div class="child-header">
+                                    <div class="child-avatar">${child.name.charAt(0)}</div>
+                                    <div class="child-info">
+                                        <h4>${child.name}</h4>
+                                        <div class="child-age">${age} years • ${child.gender}</div>
+                                        <small style="color: var(--gray);">DOB: ${new Date(child.dob).toLocaleDateString()}</small>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                    <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="window.parentProfile.viewChildProfile('${child.id}')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                    <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px;" onclick="window.parentProfile.editChild('${child.id}')">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+            
+            calculateAge(dob) {
+                const birthDate = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+            
+            loadExpert() {
+                const assignments = JSON.parse(localStorage.getItem('assignments') || '[]');
+                const userAssignment = assignments.find(a => a.parentId === this.currentUser.id);
+                
+                const expertInfo = document.getElementById('expertInfo');
+                
+                if (!userAssignment) {
+                    expertInfo.innerHTML = `
+                        <div class="no-expert">
+                            <i class="fas fa-user-md"></i>
+                            <h4>No Expert Assigned</h4>
+                            <p>You don't have an assigned expert yet.</p>
+                            <button class="btn" id="requestExpertBtn" style="margin-top: 20px;">
+                                <i class="fas fa-user-plus"></i> Request Expert
+                            </button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('requestExpertBtn').addEventListener('click', () => {
+                        this.requestExpert();
+                    });
+                    
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                this.expert = users.find(u => u.id === userAssignment.expertId);
+                
+                if (!this.expert) {
+                    expertInfo.innerHTML = `
+                        <div class="no-expert">
+                            <i class="fas fa-user-md"></i>
+                            <h4>Expert Not Found</h4>
+                            <p>The assigned expert is no longer available.</p>
+                            <button class="btn" id="requestNewExpertBtn" style="margin-top: 20px;">
+                                <i class="fas fa-user-plus"></i> Request New Expert
+                            </button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('requestNewExpertBtn').addEventListener('click', () => {
+                        this.requestExpert();
+                    });
+                    
+                    return;
+                }
+                
+                // Get expert's suggestions count
+                const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]')
+                    .filter(s => s.expertId === this.expert.id && this.children.some(c => c.id === s.childId));
+                
+                expertInfo.innerHTML = `
+                    <div class="expert-card">
+                        <div class="expert-header">
+                            <div class="expert-avatar">${this.expert.name.charAt(0)}</div>
+                            <div class="expert-details">
+                                <h4>${this.expert.name}</h4>
+                                <div class="expert-specialization">${this.expert.specialization || 'Child Development Expert'}</div>
+                                <div style="color: var(--gray); font-size: 14px;">
+                                    <i class="fas fa-star" style="color: gold;"></i> ${this.expert.rating || '4.8'} • ${this.expert.experience || '5'} years experience
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="expert-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>${this.expert.email}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>${this.expert.phone || 'Not provided'}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>${suggestions.length} suggestions given for your children</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Assigned since: ${new Date(userAssignment.assignedAt).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="btn" id="messageExpertBtn">
+                                <i class="fas fa-comment"></i> Message Expert
+                            </button>
+                            <button class="btn btn-secondary" id="viewExpertProfileBtn">
+                                <i class="fas fa-eye"></i> View Full Profile
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('messageExpertBtn').addEventListener('click', () => {
+                    this.messageExpert();
+                });
+                
+                document.getElementById('viewExpertProfileBtn').addEventListener('click', () => {
+                    this.viewExpertProfile();
+                });
+            }
+            
+            updateStats() {
+                document.getElementById('childrenCount').textContent = this.children.length;
+                document.getElementById('expertCount').textContent = this.expert ? '1' : '0';
+            }
+            
+            setupEventListeners() {
+                // Edit profile button
+                document.getElementById('editProfileBtn').addEventListener('click', () => {
+                    this.showEditModal();
+                });
+                
+                // Change password button
+                document.getElementById('changePasswordBtn').addEventListener('click', () => {
+                    this.showChangePasswordModal();
+                });
+                
+                // Add child button
+                document.getElementById('addChildBtn').addEventListener('click', () => {
+                    this.addChild();
+                });
+                
+                // Modal close buttons
+                document.getElementById('closeEditModal').addEventListener('click', () => {
+                    document.getElementById('editProfileModal').classList.remove('active');
+                });
+                
+                document.getElementById('closePasswordModal').addEventListener('click', () => {
+                    document.getElementById('changePasswordModal').classList.remove('active');
+                });
+                
+                // Form submissions
+                document.getElementById('editProfileForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveProfileChanges();
+                });
+                
+                document.getElementById('changePasswordForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.changePassword();
+                });
+                
+                // Close modals when clicking outside
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                        }
+                    });
+                });
+            }
+            
+            showEditModal() {
+                document.getElementById('editProfileModal').classList.add('active');
+            }
+            
+            showChangePasswordModal() {
+                document.getElementById('changePasswordModal').classList.add('active');
+            }
+            
+            saveProfileChanges() {
+                const updatedUser = {
+                    ...this.currentUser,
+                    name: document.getElementById('editName').value,
+                    email: document.getElementById('editEmail').value,
+                    phone: document.getElementById('editPhone').value,
+                    address: document.getElementById('editAddress').value,
+                    updatedAt: new Date().toISOString()
+                };
+                
+                // Update in localStorage
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                users = users.map(u => u.id === this.currentUser.id ? updatedUser : u);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Update current user
+                this.currentUser = updatedUser;
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                
+                // Log activity
+                this.logActivity({
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    action: 'Updated profile',
+                    type: 'profile',
+                    details: 'Updated personal information'
+                });
+                
+                alert('Profile updated successfully!');
+                document.getElementById('editProfileModal').classList.remove('active');
+                
+                // Refresh data
+                this.loadUserData();
+            }
+            
+            changePassword() {
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (newPassword !== confirmPassword) {
+                    alert('New passwords do not match');
+                    return;
+                }
+                
+                if (newPassword.length < 6) {
+                    alert('Password must be at least 6 characters long');
+                    return;
+                }
+                
+                if (currentPassword !== this.currentUser.password) {
+                    alert('Current password is incorrect');
+                    return;
+                }
+                
+                // Update password
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                const updatedUser = {
+                    ...this.currentUser,
+                    password: newPassword,
+                    updatedAt: new Date().toISOString()
+                };
+                
+                users = users.map(u => u.id === this.currentUser.id ? updatedUser : u);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Update current user
+                this.currentUser = updatedUser;
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                
+                // Log activity
+                this.logActivity({
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    action: 'Changed password',
+                    type: 'security',
+                    details: 'Password was changed'
+                });
+                
+                alert('Password changed successfully!');
+                document.getElementById('changePasswordModal').classList.remove('active');
+                document.getElementById('changePasswordForm').reset();
+            }
+            
+            viewChildProfile(childId) {
+                localStorage.setItem('selectedChildId', childId);
+                window.location.href = 'child-profile.html';
+            }
+            
+            viewChild(childId) {
+                this.viewChildProfile(childId);
+            }
+            
+            editChild(childId) {
+                const child = this.children.find(c => c.id === childId);
+                if (child) {
+                    if (confirm(`Edit ${child.name}'s profile?`)) {
+                        this.viewChildProfile(childId);
+                    }
+                }
+            }
+            
+            addChild() {
+                // Redirect to parent dashboard to add child
+                window.location.href = 'parent-dashboard.html#addChild';
+            }
+            
+            requestExpert() {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const availableExperts = users.filter(u => u.role === 'expert' && u.status === 'verified');
+                
+                if (availableExperts.length === 0) {
+                    alert('No experts available at the moment. Please check back later.');
+                    return;
+                }
+                
+                // Show expert selection modal
+                let expertList = 'Available Experts:\n\n';
+                availableExperts.forEach((expert, index) => {
+                    expertList += `${index + 1}. ${expert.name} - ${expert.specialization || 'General'} (${expert.experience || '0'} years experience)\n`;
+                });
+                
+                const expertChoice = prompt(`${expertList}\nEnter the number of the expert you want to request:`);
+                const expertIndex = parseInt(expertChoice) - 1;
+                
+                if (expertIndex >= 0 && expertIndex < availableExperts.length) {
+                    const selectedExpert = availableExperts[expertIndex];
+                    
+                    if (confirm(`Request ${selectedExpert.name} as your expert?`)) {
+                        // Create assignment request
+                        const request = {
+                            id: 'req_' + Date.now(),
+                            parentId: this.currentUser.id,
+                            parentName: this.currentUser.name,
+                            expertId: selectedExpert.id,
+                            expertName: selectedExpert.name,
+                            status: 'pending',
+                            requestedAt: new Date().toISOString()
+                        };
+                        
+                        // Save request
+                        let requests = JSON.parse(localStorage.getItem('expert_requests') || '[]');
+                        requests.push(request);
+                        localStorage.setItem('expert_requests', JSON.stringify(requests));
+                        
+                        // Log activity
+                        this.logActivity({
+                            userId: this.currentUser.id,
+                            userName: this.currentUser.name,
+                            action: 'Requested expert',
+                            type: 'expert',
+                            details: `Requested expert ${selectedExpert.name}`
+                        });
+                        
+                        alert('Expert request sent! Admin will review and assign the expert to you.');
+                    }
+                } else {
+                    alert('Invalid selection');
+                }
+            }
+            
+            messageExpert() {
+                if (!this.expert) {
+                    alert('No expert assigned');
+                    return;
+                }
+                
+                alert(`Chat feature with ${this.expert.name} coming soon!`);
+            }
+            
+            viewExpertProfile() {
+                if (!this.expert) {
+                    alert('No expert assigned');
+                    return;
+                }
+                
+                // Store expert info for viewing
+                localStorage.setItem('viewingExpertId', this.expert.id);
+                alert(`Expert profile view feature coming soon!\n\nExpert: ${this.expert.name}\nSpecialization: ${this.expert.specialization}\nExperience: ${this.expert.experience} years`);
+            }
+            
+            logActivity(activity) {
+                const log = {
+                    ...activity,
+                    timestamp: new Date().toISOString(),
+                    id: 'log_' + Date.now()
+                };
+                
+                let logs = JSON.parse(localStorage.getItem('activities_log') || '[]');
+                logs.push(log);
+                localStorage.setItem('activities_log', JSON.stringify(logs));
+            }
+        }
+        
+        // Initialize parent profile
+        document.addEventListener('DOMContentLoaded', () => {
+            window.parentProfile = new ParentProfile();
+        });
+    </script>
+</body>
+</html>
